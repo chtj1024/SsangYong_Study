@@ -4,6 +4,12 @@
 
 class PrimitiveDataType {
 	public static void main(String[] args) {
-		System.out.println("Hello World!");
+		byte b=127;
+		System.out.println("byte : " + b);
+		short s = 6;
+		System.out.println("short : " + s);
+		
+		long deposit = 3000000000;
+		System.out.println(money);
 	}
 }
