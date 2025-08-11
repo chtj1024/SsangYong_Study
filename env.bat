@@ -3,5 +3,6 @@ rem PATH 는 설치 된 프로그램을 경로에 상관없이 사용하기 위�
 set DEV_HOME=c:\dev
 
 set JAVA_HOME=%DEV_HOME%\java-17-openjdk-17.0.3.0.6-1
+set ECLIPSE_HOME=%DEV_HOME%\eclipse
 
-set PATH=%PATH%;%JAVA_HOME%\bin
+set PATH=%PATH%;%JAVA_HOME%\bin;%ECLIPSE_HOME%
