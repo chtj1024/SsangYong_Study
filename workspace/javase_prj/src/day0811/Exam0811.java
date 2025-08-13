@@ -24,17 +24,17 @@ public class Exam0811 {
 		// 편도요금 : [ ]원
 		// 한달 20일 기준 총 교통 요금 [ ]원 입니다.
 		
+		if (!args[0].equals("VIL_BUS") && !args[0].equals("BUS") && !args[0].equals("SUBWAY")) {
+			System.out.println("대중교통수단이 아닙니다.");
+			return;
+		}
+		
 		int distance = Integer.parseInt(args[1]);
 		
 		int pCharge = 0;
 		if (distance - 10 > 0) { // 11 ~ 15km 100원 추가 이런 식
 			pCharge += (((distance - 11) / 5) + 1) * 100;
 			// distance에서 10만 빼면 15일 때 200원이 되버리므로 11을 뺌
-		}
-		
-		if (!args[0].equals("VIL_BUS") && !args[0].equals("BUS") && !args[0].equals("SUBWAY")) {
-			System.out.println("대중교통수단이 아닙니다.");
-			return;
 		}
 		
 		int nowVehicle = 0;
