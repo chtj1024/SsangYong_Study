@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"day0805"},{"l":"day0806"},{"l":"day0807"},{"l":"day0808"},{"l":"day0811"},{"l":"day0812"},{"l":"day0813"},{"l":"day0813.sub"},{"l":"kr.co.sist.util"}];updateSearchResults();
