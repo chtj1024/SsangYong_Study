@@ -30,6 +30,25 @@ class ResidentNum {
 	
 	public ResidentNum(String residentNumber) {
 		this.residentNumber = residentNumber;
+		
+		// 몇세기에 태어났는지 설정
+		birth = "";
+		if (residentNumber.charAt(7) == '1'
+				|| residentNumber.charAt(7) == '2'
+				|| residentNumber.charAt(7) == '5'
+				|| residentNumber.charAt(7) == '6') {
+			birth += "19";
+		} else if (residentNumber.charAt(7) == '3'
+				|| residentNumber.charAt(7) == '4'
+				|| residentNumber.charAt(7) == '7'
+				|| residentNumber.charAt(7) == '8') {
+			birth += "20";
+		} else {
+			birth += "18";
+		}
+		
+		// 태어난 년도 4자리 설정
+		years = Integer.parseInt( birth + residentNumber.substring(0, 2) );
 	}
 	
 	public void setResidentNum(String residentNumber) {
@@ -49,32 +68,17 @@ class ResidentNum {
 	}
 	
 	public String makeBirth() {
-		birth = "";
-		if (residentNumber.charAt(7) == '1'
-				|| residentNumber.charAt(7) == '2'
-				|| residentNumber.charAt(7) == '5'
-				|| residentNumber.charAt(7) == '6') {
-			birth += "19";
-		} else if (residentNumber.charAt(7) == '3'
-				|| residentNumber.charAt(7) == '4'
-				|| residentNumber.charAt(7) == '7'
-				|| residentNumber.charAt(7) == '8') {
-			birth += "20";
-		} else {
-			birth += "18";
-		}
 		String strBirth = birth;
 		strBirth += residentNumber.substring(0, 2) + "년 " + residentNumber.substring(2, 4) + "월 " + residentNumber.substring(4, 6) + "일";
 		return strBirth;
 	}
 	
-	public int getAge() {
-		years = Integer.parseInt( birth + residentNumber.substring(0, 2) );
+	public int getAge() {		
 		return 2025 - years;
 	}
 	
 	public String getGender() {
-		return residentNumber.charAt(7) % 2 == 0 ? "여자" : "남자";
+		return (int)residentNumber.charAt(7) % 2 == 0 ? "여자" : "남자";
 	}
 	
 	public String checkForeigner() {
