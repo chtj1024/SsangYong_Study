@@ -73,11 +73,14 @@ public class UseArray2{
 		}
 	}
 	
+	
+	
 	public static void main(String[] args) {
 		UseArray2 ua2 = new UseArray2();
 		ua2.useArray2();
 		System.out.println("----------기본형 형식의 사용----------");
 		ua2.useArray3();
+		System.out.println("----------기본형 형식의 사용----------");
 	}
 
 }
