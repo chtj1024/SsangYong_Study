@@ -3,6 +3,8 @@ package day0827;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * IsO 8601 표준을 준수하여 만들어진 날짜 클래스.
@@ -45,6 +47,9 @@ public class UseTimePackage {
 		.append(lt.getNano());
 		
 		System.out.println(ltFormat);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:HH,kk,KK:mm:ss EEEE", Locale.US);
+		System.out.println(ldt.format(dtf));
 	}
 	
 	public static void main(String[] args) {
