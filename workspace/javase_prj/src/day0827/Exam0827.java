@@ -31,7 +31,14 @@ public class Exam0827 {
 		case 1 : selectedLocale = Locale.GERMAN; break;
 		case 2 : selectedLocale = Locale.US; break;
 		case 3 : selectedLocale = Locale.JAPAN; break;
-		}
+		}	
+//		Locale[] selectedLocaleArr = new Locale[] {Locale.KOREA, Locale.GERMAN, Locale.US, Locale.JAPAN};
+//		Locale selectedLocale;
+//		if (num <= 0 && num > 3) {
+//			selectedLocale = Locale.KOREA;
+//		} else {
+//			selectedLocale = selectedLocaleArr[num];
+//		}
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd a EEEE HH:mm:ss", selectedLocale);
 		
