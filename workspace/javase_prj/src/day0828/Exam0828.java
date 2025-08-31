@@ -52,7 +52,7 @@ public class Exam0828 {
 		}
 		
 		int nowWeek = cal.get(Calendar.DAY_OF_WEEK);
-		for(int i = 1; i < cal.getActualMaximum(Calendar.DAY_OF_MONTH) + 1; i++) {
+		for(int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 			
 			sb.append(i + "\t");
 			if (nowWeek % 7 == 0) {
