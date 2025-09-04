@@ -91,6 +91,10 @@ public class Exam0903 extends JFrame implements ListSelectionListener{
 		new Exam0903();
 	}
 
+	public void inputText() {
+		
+	}
+	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		

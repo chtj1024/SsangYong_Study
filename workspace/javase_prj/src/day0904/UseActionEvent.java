@@ -1,9 +1,11 @@
-package day0903;
+package day0904;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,21 +14,26 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
 /**
  * 
  */
-//1. 윈도우 컴포넌트 상속
-public class UseBorder extends JFrame {
+//1. 윈도우 컴포넌트 상속, 이벤트 처리 Listener 구현
+public class UseActionEvent extends JFrame implements ActionListener{
+//이벤트 처리와 관련 있는 컴포넌트를 선언
+	private JTextField jtfName;
+	private JTextArea jtaNameView;
 	
-	public UseBorder() {
+	public UseActionEvent() {
 		super("여러개의 Layout 사용");
 		//2. 일반컴포넌트 생성
 		JLabel jlblName = new JLabel("이름");
-		JTextField jtfName = new JTextField(20);
-		JButton jbtnInput = new JButton("입력");
+		jtfName = new JTextField(20);
+		JButton jbtnInput = new JButton("입력"); // 버튼은 이벤트를 발생시키지만 비교할 일이 없어서 
+		//field에 올리지 않는다.
+		//2-1.이벤트에 등록
+		jbtnInput.addActionListener(this);
+		jtfName.addActionListener(this);
 		
 		//글꼴객체 생성
 		Font font = new Font("휴먼편지체", Font.BOLD, 25);
@@ -36,7 +43,7 @@ public class UseBorder extends JFrame {
 		jbtnInput.setFont(font);
 		
 		//BorderLayout에 Center에 들어갈 컴포넌트
-		JTextArea jtaNameView = new JTextArea();
+		jtaNameView = new JTextArea();
 //		TextArea jtaNameView = new TextArea();
 		JScrollPane jspJtaNameView = new JScrollPane(jtaNameView);
 		
@@ -60,11 +67,6 @@ public class UseBorder extends JFrame {
 		
 		//3. 컨테이너 컴포넌트를 생성
 		JPanel jpNorth = new JPanel();
-		
-		//JScrollPane에 Border설정
-		jspJtaNameView.setBorder(new TitledBorder("이름 출력"));
-//		jspJtaNameView.setBorder(new LineBorder(Color.RED));
-//		jpNorth.setBorder(new TitledBorder("이름 입력"));
 		
 		//4. 배치관리자를 설정
 		setLayout(new BorderLayout()); // Frame의 Layout
@@ -91,7 +93,29 @@ public class UseBorder extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	public static void main(String[] args) {
-		new UseBorder();
+	//3. 이벤트가 발생되었을 때 호출될 method Override
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//JTextField에 값을 받아와서
+		String name = jtfName.getText();
+		//값이 존재하면
+		if(!name.isEmpty() ) {
+			//JTextArea 값 붙이기
+			jtaNameView.append(name);
+			jtaNameView.append("\n");
+			
+			//JtextField의 입력 값을 초기화.
+			jtfName.setText("");
+			//커서를 JTextField 위치
+			jtfName.requestFocus();
+		}
+		//JTextArea에서 붙여주고
+		
+		//JTextField의 입력 값을 초기화.
 	}
+	
+	public static void main(String[] args) {
+		new UseActionEvent();
+	}
+
 }
