@@ -3,10 +3,7 @@ package day0904;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 // 1. Event 처리 리스너를 상속, 구현
 // 자식은 부모의 메서드를 다 사용 가능하다.
