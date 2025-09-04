@@ -25,7 +25,7 @@ public class Exam0902 extends JFrame {
 		JButton[] jbtnSpace = new JButton[35 - lastDay];
 		
 		// 빈자리들을 채우기 위해 JButton의 객체 배열인 jbtnSpace를 공백들로 초기화
-		// Swing의 Component는 하나의 부모(Container Component)만 가질 수 있ek.
+		// Swing의 Component는 하나의 부모(Container Component)만 가질 수 있다.
 		// 그렇기에 이미 어떤 컨테이너에 들어간 컴포넌트를 다른 컨테이너에 넣으면 이전 위치에서 자동으로 제거되고 새로운 위치에만 남기 때문
 		for(int i = 0; i < jbtnSpace.length; i++) {
 			jbtnSpace[i] = new JButton("");
