@@ -27,6 +27,8 @@ import javax.swing.border.TitledBorder;
  * 
  * 결과창에 "로그인 성공"을 보여준다.
  * 일치하지 않으면 "로그인 실패"를 보여준다.
+ * 
+ * 0904에 한 login 파일들이 정답이다.
  */
 public class Exam0904Design extends JFrame {
 	

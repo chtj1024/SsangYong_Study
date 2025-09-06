@@ -38,9 +38,7 @@ public class Exam0904Event implements KeyListener{
 				//그렇기에 char 형의 배열의 값들을 String으로 변환해 비교할 것이다.
 				String passwordStr = new String(tempStr);
 				
-				if(tempStr.equals("")) {
-					e0904d.getJlblResult().setText("비밀번호를 입력하세요.");
-				} else {
+				if(!passwordStr.equals("")) {
 					e0904d.getJtPassword().requestFocus();
 					// 입력된 패스워드가 map의 키들 중 일치한 게 있으면
 					if(e0904d.getDataMap().containsKey(passwordStr)) {
@@ -48,6 +46,8 @@ public class Exam0904Event implements KeyListener{
 					} else {
 						e0904d.getJlblResult().setText("로그인 실패");						
 					}
+				} else {
+					e0904d.getJlblResult().setText("비밀번호를 입력해주세요.");										
 				}
 				
 			}
