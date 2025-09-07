@@ -47,16 +47,30 @@ public class Exam0905Event extends MouseAdapter implements ListSelectionListener
 		} else if (e.getSource() == e0905d.getJbtn2()) { // 삭제버튼이 눌렸을 때
 			String strNum = e0905d.getJtfNumber().getText().trim();
 			if (strNum.equals("")) {
-				System.out.println("삭제하는 번호를 입력해주세요.");
+				System.out.println("삭제하는 아이템을 클릭해주세요.");
 			} else {
+				boolean found = false; // 해당 번호가 없을 때 체크하기 위한
+				
 				for(int i = 0; i < e0905d.dlm.getSize(); i++) {
+					String item = e0905d.dlm.getElementAt(i);
+					String[] parts = item.split(",");
 					
+					if (parts[0].trim().equals(strNum)) {
+						e0905d.dlm.remove(i);
+						System.out.println("삭제 완료.");
+						found = true;
+						break;
+					}
+				}
+				
+				if(!found) {
+					System.out.println("JList에 해당번호 \'" + strNum + "\'에 맞는 아이템은 없습니다.");
 				}
 			}
 			
 		} else if (e.getSource() == e0905d.getJbtn3()) { // 종료버튼을 눌렀을 때
-			
-			System.out.println("");
+			e0905d.dispose();
+			System.out.println("종료되었습니다.");
 		}
 	}
 
