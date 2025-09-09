@@ -63,15 +63,27 @@ public class UseFileDialog extends JFrame implements ActionListener{
 	}
 	
 	public void openFileDialog() {
-		FileDialog fdOpen = new FileDialog(this, "자바 파일 열기");
-		fdOpen.setVisible(true);
+//		FileDialog fdOpen = new FileDialog(this, "자바 파일 열기");
+//		fdOpen.setVisible(true);
 		
-		String dir = fdOpen.getDirectory();
-		String file = fdOpen.getFile();
+//		String dir = fdOpen.getDirectory();
+//		String file = fdOpen.getFile();
 		//파일을 선택한 경우에만 타이틀바에 설정.
 		
+		JFileChooser jfcOpen = new JFileChooser();
+		
+		jfcOpen.showOpenDialog(this);
+		
+		File file = jfcOpen.getSelectedFile();
 		if (file != null) {
-			setTitle("저장 : " + dir + file);
+			setTitle("저장 : " + file);
+			//콘솔에 파일의 크기,
+			//권한정보(읽기 가능 | 불가능, 쓰기가능|불가능, 실행가능|불가능)를 문자열로 출력
+			
+			System.out.println(file.length() + "byte");
+			System.out.println("읽기 : " + ((file.canRead())?"가능":"불가능"));
+			System.out.println("쓰기 : " + ((file.canWrite())?"가능":"불가능"));
+			System.out.println("실행 : " + ((file.canExecute())?"가능":"불가능"));
 		}
 		
 	}
