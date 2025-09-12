@@ -1,0 +1,3 @@
+day0908.TabaccoException: 흡연은 건강에 좋지 않습니다.
+	at day0911.Test.work(Test.java:21)
+	at day0911.Test.main(Test.java:31)
