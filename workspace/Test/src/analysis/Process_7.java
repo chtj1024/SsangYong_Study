@@ -117,8 +117,19 @@ public class Process_7 {
 				
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("서비스 성공(200) 횟수 : " + countMap.get("200")).append("\n");
-		sb.append("실패(404) 횟수 : "  + countMap.get("404"));
+		if (countMap.containsKey("200")) {
+			sb.append("서비스 성공(200) 횟수 : " + countMap.get("200")).append("\n");
+		} else {
+			sb.append("서비스 성공(200) 횟수 : " + "0").append("\n");
+		}
+		
+		if (countMap.containsKey("404")) {
+			sb.append("실패(404) 횟수 : "  + countMap.get("404"));			
+		} else {
+			sb.append("실패(404) 횟수 : "  + "0");		
+		}
+		
+		
 		
 		return sb.toString();
 	}
