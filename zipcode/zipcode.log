@@ -1,0 +1,35 @@
+
+SQL*Loader: Release 21.0.0.0.0 - Production on 금 9월 19 10:40:46 2025
+Version 21.3.0.0.0
+
+Copyright (c) 1982, 2021, Oracle and/or its affiliates.  All rights reserved.
+
+SQL*Loader-275: 데이터는 제어 파일에 있지만 "INFILE *"가 지정되지 않았습니다.
+
+제어 파일:    zipcode.ctl
+데이터 파일:    zipcode_20130201.dat
+  부적합한 파일:     zipcode_20130201.bad
+  폐기 파일:    지정 사항 없음
+ 
+ (모든 폐기된 레코드 허용)
+
+로드할 건수: ALL
+생략 건수: 0
+허용 오류 수: 50
+바인드 배열:  250 행, 최대 1048576 바이트
+계속:    지정 사항 없음
+사용된 경로:      규약
+
+테이블 ZIPCODE, 로드되었습니다 개개의 논리 레코드로부터
+이 테이블에 적당한 Insert 옵션: INSERT
+
+   열 이름                  위치   Len  Term Encl 데이터 유형
+------------------------------ ---------- ----- ---- ---- ---------------------
+ZIPCODE                             FIRST     *   ,       CHARACTER            
+SIDO                                 NEXT     *   ,       CHARACTER            
+GUGUN                                NEXT     *   ,       CHARACTER            
+DONG                                 NEXT     *   ,       CHARACTER            
+BUNJI                                NEXT     *   ,       CHARACTER            
+SEQ                                  NEXT     *   ,       CHARACTER            
+
+SQL*Loader-601: INSERT 옵션을 사용하려면 테이블이 비어 있어야 합니다.  ZIPCODE 테이블에 오류
