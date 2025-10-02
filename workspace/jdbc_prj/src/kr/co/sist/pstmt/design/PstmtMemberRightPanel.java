@@ -9,14 +9,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import kr.co.sist.statement.event.MemberEvent;
+import kr.co.sist.pstmt.event.PstmtMemberEvent;
 
 public class PstmtMemberRightPanel extends JPanel {
 	
 	private DefaultListModel<String> dlmMember;
 	private JList<String> jlMember;
 	private JScrollPane jspJlMember;
-	private MemberEvent me;
+	private PstmtMemberEvent me;
 		
 	public PstmtMemberRightPanel() {
 		dlmMember = new DefaultListModel<String>();
@@ -38,7 +38,7 @@ public class PstmtMemberRightPanel extends JPanel {
 	 * 모든 회원 정보를 dlm에 설정하는 일
 	 * @param me
 	 */
-	public void setMemberEvent(MemberEvent me) {
+	public void setMemberEvent(PstmtMemberEvent me) {
 		this.me = me;
 //		jlMember.addListSelectionListener(me);
 		jlMember.addMouseListener(me);

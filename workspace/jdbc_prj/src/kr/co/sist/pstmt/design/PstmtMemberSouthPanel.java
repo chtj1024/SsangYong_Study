@@ -3,12 +3,13 @@ package kr.co.sist.pstmt.design;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import kr.co.sist.pstmt.event.PstmtMemberEvent;
 import kr.co.sist.statement.event.MemberEvent;
 
 public class PstmtMemberSouthPanel extends JPanel {
 	
 	private JButton jbtnAdd, jbtnModify, jbtnRemove, jbtnClose;
-	private MemberEvent me;
+	private PstmtMemberEvent me;
 	
 	public PstmtMemberSouthPanel() {
 		jbtnAdd = new JButton("추가");
@@ -22,7 +23,7 @@ public class PstmtMemberSouthPanel extends JPanel {
 		add(jbtnClose);
 	}
 	
-	public void setMemberEvent(MemberEvent me) {
+	public void setMemberEvent(PstmtMemberEvent me) {
 		this.me = me;
 	}
 	
@@ -52,10 +53,5 @@ public class PstmtMemberSouthPanel extends JPanel {
 
 	public JButton getJbtnClose() {
 		return jbtnClose;
-	}
-
-	public MemberEvent getMe() {
-		return me;
-	}
-	
+	}	
 }

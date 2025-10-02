@@ -14,6 +14,7 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import kr.co.sist.pstmt.design.PstmtMemberDesign;
+import kr.co.sist.pstmt.design.PstmtMemberLeftPanel;
 import kr.co.sist.pstmt.service.PstmtMemberService;
 import kr.co.sist.statement.design.MemberDesign;
 import kr.co.sist.statement.design.MemberLeftPanel;
@@ -44,7 +45,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 		//선택한 회원의 번호 얻기
 		int memberNum = Integer.parseInt(memberArrData[0]);
 		MemberDTO mDTO = ms.searchOneMember(memberNum); //회원번호로 검색한 결과 DTO저장 반환
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd a");
 		
@@ -63,7 +64,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 //		System.out.println(selectedMember);
 		String[] memberArrData = selectedMember.split(",");
 		//배열의 데이터를 JTextField에 설정
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 		mlp.getJtfNum().setText(memberArrData[0]);
 		mlp.getJtfName().setText(memberArrData[1]);
 		mlp.getJtfAge().setText(memberArrData[2]);
@@ -100,7 +101,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void removeMember() throws NumberFormatException{
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 
 		
 		if(mlp.getJtfNum().getText().trim().isEmpty()) {
@@ -137,7 +138,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void modifyMember() throws NumberFormatException{
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 		
 		if(mlp.getJtfNum().getText().trim().isEmpty()) {
 			JOptionPane.showMessageDialog(md, "회원을 먼저 선택 한 후 정보를 변경해주세요.");
@@ -165,7 +166,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void addMember() throws NumberFormatException{
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 		
 		//1. 사용자가 입력한 값을 얻고
 		MemberDTO mDTO = new MemberDTO();
@@ -188,7 +189,7 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	}
 
 	public void resetInputField() {
-		MemberLeftPanel mlp = md.getMlp();
+		PstmtMemberLeftPanel mlp = md.getMlp();
 		
 		mlp.getJtfName().setText("");
 		mlp.getJtfAge().setText("");
