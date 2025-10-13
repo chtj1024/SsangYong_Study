@@ -6,25 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import kr.co.sist.statement.dao.MemberDAO;
+import kr.co.sist.pstmt.dao.PstmtMemberDAO;
 import kr.co.sist.statement.dto.MemberDTO;
 
 public class PstmtMemberService {
-	private MemberDAO mDAO;
+	private PstmtMemberDAO mDAO;
 	
 	public PstmtMemberService() {
-		mDAO = new MemberDAO();
+		mDAO = new PstmtMemberDAO();
 	}
 	
 	public boolean addMember(MemberDTO mDTO) {
 		boolean flag = false; // 실패 상태
 		
-		try {
-			mDAO.insertMember(mDTO); // DB에 추가 작업이 문제가 없다면
-			flag = true; // 성공 상태
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		mDAO.insertMember(mDTO); // DB에 추가 작업이 문제가 없다면
+		flag = true; // 성공 상태
 		
 		return flag;
 	}

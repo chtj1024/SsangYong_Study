@@ -16,7 +16,7 @@ public class PstmtMemberDesign extends JFrame{
 	private PstmtMemberSouthPanel msp;
 	
 	public PstmtMemberDesign() {
-		super("호갱 관리");
+		super("더호갱 관리");
 		
 		JPanel jpCenter = new JPanel();
 		

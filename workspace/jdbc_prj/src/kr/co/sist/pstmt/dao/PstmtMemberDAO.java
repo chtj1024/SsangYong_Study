@@ -3,6 +3,7 @@ package kr.co.sist.pstmt.dao;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,11 +19,11 @@ public class PstmtMemberDAO {
 
 	/**
 	 * 회원정보를 member table에 추가하는 일
-	 * 
 	 * @param mDTO 추가할 회원정보
-	 * @throws ClassNotFoundException
+	 * @return 추가 된 행의 수 1-성공, 0-실패
 	 */
-	public void insertMember(MemberDTO mDTO) throws SQLException {
+	public int insertMember(MemberDTO mDTO) {
+		int rowCnt = 0;
 		// 1. 드라이버 로딩
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
@@ -33,27 +34,28 @@ public class PstmtMemberDAO {
 		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
 		String id = "scott";
 		String pass = "tiger";
-		Connection con = null;
-		Statement stmt = null;
-
-		con = DriverManager.getConnection(url, id, pass);
-		// 3. 쿼리문 생성 객체 얻기
-		stmt = con.createStatement();
-		String insertMember = "insert into member(num, name, age, gender, tel)" + "values(seq_member.nextval,'"
-				+ mDTO.getName() + "'," + mDTO.getAge() + ",'" + mDTO.getGender() + "','" + mDTO.getTel() + "')";
-
-		// 4. 쿼리문 수행 후 결과 얻기
-		stmt.executeUpdate(insertMember);
-
-		try {
-			// 5. 연결 끊기
-			if (stmt != null)
-				stmt.close();
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+	
+		PreparedStatement pstmt = null;
+		// 사용이 종료되면 자원을 알아서 끊어준다.
+		try(Connection con = DriverManager.getConnection(url, id, pass)) {
+			// 3. 쿼리문 생성 객체 얻기
+			String insertMember =
+					"insert into member(num,name,age,gender,tel) values(seq_member.nextval, ?, ?, ?, ?)";
+								
+			// 4.바인드 변수에 값 설정
+			pstmt = con.prepareStatement(insertMember);
+			pstmt.setString(1, mDTO.getName());
+			pstmt.setInt(2, mDTO.getAge());
+			pstmt.setString(3, mDTO.getGender());
+			pstmt.setString(4, mDTO.getTel());
+			
+			//5. 쿼리문 수행 후 결과 얻기
+			rowCnt = pstmt.executeUpdate();
+			if(pstmt != null) {pstmt.close();}
+		} catch(SQLException se) {
+			se.printStackTrace();
 		}
+		return rowCnt;
 	}
 
 	/**
