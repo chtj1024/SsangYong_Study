@@ -1,5 +1,6 @@
 package kr.co.sist.pstmt.service;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,17 +11,23 @@ import kr.co.sist.pstmt.dao.PstmtMemberDAO;
 import kr.co.sist.statement.dto.MemberDTO;
 
 public class PstmtMemberService {
-	private PstmtMemberDAO mDAO;
+//	private PstmtMemberDAO mDAO;
 	
 	public PstmtMemberService() {
-		mDAO = new PstmtMemberDAO();
+//		mDAO = new PstmtMemberDAO();
 	}
 	
 	public boolean addMember(MemberDTO mDTO) {
 		boolean flag = false; // 실패 상태
 		
-		mDAO.insertMember(mDTO); // DB에 추가 작업이 문제가 없다면
-		flag = true; // 성공 상태
+		PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
+		
+//		mDAO.insertMember(mDTO); // DB에 추가 작업이 문제가 없다면	
+		try {
+			flag = pmDAO.insertMember(mDTO) == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return flag;
 	}
@@ -29,7 +36,9 @@ public class PstmtMemberService {
 		List<String> list = new ArrayList<String>();
 		StringBuilder searchMember = new StringBuilder();
 		try {
-			List<MemberDTO> tempList = mDAO.selectAllMember();
+			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
+			
+			List<MemberDTO> tempList = pmDAO.selectAllMember();
 			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy a", Locale.UK);
 			
 			for(MemberDTO mDTO : tempList) {
@@ -54,7 +63,8 @@ public class PstmtMemberService {
 	public MemberDTO searchOneMember(int num) {
 		MemberDTO mDTO = null;		
 		try {
-			mDTO = mDAO.selectOneMember(num);
+			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
+			mDTO = pmDAO.selectOneMember(num);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -72,9 +82,12 @@ public class PstmtMemberService {
 		int flag = 0;
 		
 		try {
-			flag = mDAO.updateMember(mDTO);
+			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
+			flag = pmDAO.updateMember(mDTO);
 			//DB테이블에 회원번호가 PK가 아니라면 flag가 n개가 반환 될 수 있고
 			//그 경우에는 1로 재설정한다.
+		} catch(IOException ie) {
+			ie.printStackTrace();
 		} catch (SQLException e) {
 			flag = 2;
 			e.printStackTrace();
@@ -87,9 +100,12 @@ public class PstmtMemberService {
 		int flag = 0;
 		
 		try {
-			flag = mDAO.deleteMember(memberNum);
+			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
+			flag = pmDAO.deleteMember(memberNum);
 			//DB테이블에 회원번호가 PK가 아니라면 flag가 n개가 반환 될 수 있고
 			//그 경우에는 1로 재설정한다.
+		} catch(IOException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			flag = 2;
 			e.printStackTrace();

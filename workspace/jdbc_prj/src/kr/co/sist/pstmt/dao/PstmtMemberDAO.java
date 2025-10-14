@@ -1,5 +1,6 @@
 package kr.co.sist.pstmt.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -10,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import day1013.Singleton;
 import kr.co.sist.statement.dto.MemberDTO;
 
 /**
@@ -17,27 +19,23 @@ import kr.co.sist.statement.dto.MemberDTO;
  */
 public class PstmtMemberDAO {
 
+	private static PstmtMemberDAO instance;
+	
 	/**
 	 * 회원정보를 member table에 추가하는 일
 	 * @param mDTO 추가할 회원정보
 	 * @return 추가 된 행의 수 1-성공, 0-실패
 	 */
-	public int insertMember(MemberDTO mDTO) {
+	public int insertMember(MemberDTO mDTO) throws SQLException{
 		int rowCnt = 0;
-		// 1. 드라이버 로딩
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		// 2. 로딩 된 드라이버를 사용하여 커넥션 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "scott";
-		String pass = "tiger";
-	
+		
+		Connection con = null;
+		
 		PreparedStatement pstmt = null;
+		GetConnection gc = GetConnection.getInstance();
 		// 사용이 종료되면 자원을 알아서 끊어준다.
-		try(Connection con = DriverManager.getConnection(url, id, pass)) {
+		try {
+			con = gc.getConn();
 			// 3. 쿼리문 생성 객체 얻기
 			String insertMember =
 					"insert into member(num,name,age,gender,tel) values(seq_member.nextval, ?, ?, ?, ?)";
@@ -52,8 +50,10 @@ public class PstmtMemberDAO {
 			//5. 쿼리문 수행 후 결과 얻기
 			rowCnt = pstmt.executeUpdate();
 			if(pstmt != null) {pstmt.close();}
-		} catch(SQLException se) {
-			se.printStackTrace();
+		} catch(IOException ie) {
+			ie.printStackTrace();
+		} finally {
+			gc.dbClose(con, pstmt, null);
 		}
 		return rowCnt;
 	}
@@ -64,43 +64,42 @@ public class PstmtMemberDAO {
 	 * @param mDTO
 	 * @return 0-회원번호 없음, 1-회원번호로 삭제
 	 * @throws SQLException DBMS에서 문제 발생
+	 * @throws IOException 
 	 */
-	public int updateMember(MemberDTO mDTO) throws SQLException {
+	public int updateMember(MemberDTO mDTO) throws SQLException, IOException {
 		int flag = 0;
 
-		//// 1. 드라이버 로딩
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		// 2. 로딩 된 드라이버를 사용하여 커넥션 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "scott";
-		String pass = "tiger";
+		GetConnection gc = GetConnection.getInstance();
+		
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 
-		con = DriverManager.getConnection(url, id, pass);
-		// 3. 쿼리문 생성 객체 얻기
-		stmt = con.createStatement();
-
-		// 회원번호를 사용하여 나이, 전화번호를 변경
-		StringBuilder updateMember = new StringBuilder();
-		updateMember.append("	update	member	").append("	set		age	=").append(mDTO.getAge()).append(",")
-				.append("tel='").append(mDTO.getTel()).append("'").append("	where	num=").append(mDTO.getNum());
-
-		// 4. 쿼리문 수행 후 결과 얻기
-		flag = stmt.executeUpdate(updateMember.toString()); // 변경한 행의 수 리턴
 
 		try {
-			// 5. 연결 끊기
-			if (stmt != null)
-				stmt.close();
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			//1. 드라이버로딩
+			//2. 커넥션얻기
+			
+			con = gc.getConn();
+			// 3. 쿼리문 생성 객체 얻기
+			// 회원번호를 사용하여 나이, 전화번호를 변경
+			StringBuilder updateMember = new StringBuilder();
+			updateMember
+			.append("	update	member	")
+			.append("	set		age=?, tel=?")
+			.append("	where	num=?");
+			
+			pstmt = con.prepareStatement(updateMember.toString());
+			
+			//4. 바인드변수에 값 설정
+			pstmt.setInt(1, mDTO.getAge());
+			pstmt.setString(2, mDTO.getTel());
+			pstmt.setInt(3, mDTO.getNum());
+			
+			// 5. 쿼리문 수행 후 결과 얻기
+			flag = pstmt.executeUpdate(); // 변경한 행의 수 리턴
+		} finally {
+			// 6. 연결 끊기
+			gc.dbClose(con, pstmt, null);			
 		}
 
 		return flag;
@@ -112,45 +111,37 @@ public class PstmtMemberDAO {
 	 * @param memberNum 삭제할 회원번호
 	 * @return 0-회원번호 없음, 1-회원번호로 삭제
 	 * @throws SQLException DBMS에서 문제 발생
+	 * @throws IOException 
 	 */
-	public int deleteMember(int memberNum) throws SQLException {
+	public int deleteMember(int memberNum) throws SQLException, IOException {
 		int flag = 0;
 
-		// 1. 드라이버 로딩
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		// 2. 로딩 된 드라이버를 사용하여 커넥션 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "scott";
-		String pass = "tiger";
+		
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 
-		con = DriverManager.getConnection(url, id, pass);
-		// 3. 쿼리문 생성 객체 얻기
-		stmt = con.createStatement();
-
-		// 회원번호를 사용하여 레코드를 삭제
-		StringBuilder deleteMember = new StringBuilder();
-		deleteMember
-		.append("	delete	from member	")
-		.append("	where	num = ").append(memberNum);
-
-		// 4. 쿼리문 수행 후 결과 얻기
-		flag = stmt.executeUpdate(deleteMember.toString()); // 변경한 행의 수 리턴
-		System.out.println(flag + "건 삭제되었습니다.");
+		GetConnection gc = GetConnection.getInstance();
+		
 
 		try {
+			con = gc.getConn();
+			// 3. 쿼리문 생성 객체 얻기
+			// 회원번호를 사용하여 레코드를 삭제
+			String deleteMember =
+			" delete	from member	" +
+			" where		num=?";
+			pstmt = con.prepareStatement(deleteMember.toString());
+			
+			pstmt.setInt(1, memberNum);
+			
+			
+			// 4. 쿼리문 수행 후 결과 얻기
+			flag = pstmt.executeUpdate(); // 변경한 행의 수 리턴
+			System.out.println(flag + "건 삭제되었습니다.");
+			
+		} finally {
 			// 5. 연결 끊기
-			if (stmt != null)
-				stmt.close();
-			if (con != null)
-				con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			gc.dbClose(con, pstmt, null);			
 		}
 
 		return flag;
@@ -277,5 +268,12 @@ public class PstmtMemberDAO {
 		String searchMember = "";
 
 		return searchMember;
+	}
+	
+	public static PstmtMemberDAO getInstance() {
+		if (instance == null) { // 객체가 생성되어 있지 않다면
+			instance = new PstmtMemberDAO(); // 객체를 생성한다.
+		}
+		return instance;
 	}
 }
