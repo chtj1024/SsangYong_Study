@@ -49,7 +49,6 @@ public class GetConnection {
 //		String id = "scott";
 //		String pass = "tiger";
 	
-		PreparedStatement pstmt = null;
 		// 사용이 종료되면 자원을 알아서 끊어준다.
 		Connection con = DriverManager.getConnection(url, id, pass);
 		

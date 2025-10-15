@@ -1,7 +1,5 @@
 package test;
 
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,6 +34,23 @@ class PstmtTest {
 		}
 	}
 	
+	@DisplayName("Service회원번호 조회 테스트 ")
+	@Test
+	void testSelectOneMember() {
+		PstmtMemberService pms = new PstmtMemberService();
+		
+		assertNotNull(pms.searchOneMember(1));
+	}
+	
+	@Disabled
+	@DisplayName("Service 회원정보 추가테스트")
+	@Test
+	void testSelectAllMember() {
+		PstmtMemberService pms = new PstmtMemberService();
+		
+		assertEquals(pms.searchAllMember().size(), 4);
+	}
+	
 	@Disabled
 	@DisplayName("DAO 회원정보 변경테스트")
 	@Test
@@ -50,7 +65,7 @@ class PstmtTest {
 			e.printStackTrace();
 		}
 	}
-	
+	@Disabled
 	@DisplayName("DAO 회원정보 삭제 테스트")
 	@Test
 	void testDeleteMember() {

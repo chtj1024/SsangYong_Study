@@ -3,31 +3,41 @@ package kr.co.sist.pstmt.design;
 import java.awt.BorderLayout;
 import java.awt.Font;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import kr.co.sist.pstmt.event.PstmtMemberEvent;
 
 public class PstmtMemberRightPanel extends JPanel {
 	
-	private DefaultListModel<String> dlmMember;
-	private JList<String> jlMember;
+	private DefaultTableModel dtmMember;
+	private JTable jtMember;
 	private JScrollPane jspJlMember;
 	private PstmtMemberEvent me;
 		
 	public PstmtMemberRightPanel() {
-		dlmMember = new DefaultListModel<String>();
+		String[] columnNames = {"번호","이름","나이","성별","전화번호","가입일"};
+		dtmMember = new DefaultTableModel(columnNames, 0);
+		jtMember = new JTable(dtmMember);
 		
-		jlMember = new JList<String>(dlmMember);
+		// column의 넓이 설정
+		TableColumnModel tcm =  jtMember.getColumnModel();
+		tcm.getColumn(0).setPreferredWidth(40); //번호
+		tcm.getColumn(1).setPreferredWidth(80); //회원명
+		tcm.getColumn(2).setPreferredWidth(40); //나이
+		tcm.getColumn(3).setPreferredWidth(60); //성별
+		tcm.getColumn(4).setPreferredWidth(100); //전화번호
+		tcm.getColumn(5).setPreferredWidth(120); //가입일
 		
-		jlMember.setFont(new Font("맑은 고딕", Font.BOLD, 22));
+		jtMember.setFont(new Font("맑은 고딕", Font.BOLD, 12));
 		setBorder(new TitledBorder("회원정보"));
 		setLayout(new BorderLayout());
 		
-		jspJlMember = new JScrollPane(jlMember);
+		jspJlMember = new JScrollPane(jtMember);
 		
 		add(jspJlMember);
 			
@@ -41,22 +51,24 @@ public class PstmtMemberRightPanel extends JPanel {
 	public void setMemberEvent(PstmtMemberEvent me) {
 		this.me = me;
 //		jlMember.addListSelectionListener(me);
-		jlMember.addMouseListener(me);
+		jtMember.addMouseListener(me);
 		
 		me.searchAllMember();
 	}
-	
-	public DefaultListModel<String> getDlmMember() {
-		return dlmMember;
+
+	public DefaultTableModel getDtmMember() {
+		return dtmMember;
 	}
 
-	public JList<String> getJlMember() {
-		return jlMember;
+	public JTable getJtMember() {
+		return jtMember;
 	}
 
 	public JScrollPane getJspJlMember() {
 		return jspJlMember;
 	}
+
+	
 	
 	
 }

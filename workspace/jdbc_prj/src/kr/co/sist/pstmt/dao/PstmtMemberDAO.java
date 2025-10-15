@@ -153,31 +153,23 @@ public class PstmtMemberDAO {
 	 * @return 모든 사원 정보
 	 * @throws SQLException
 	 */
-	public List<MemberDTO> selectAllMember() throws SQLException {
+	public List<MemberDTO> selectAllMember() throws SQLException, IOException {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
 
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		// 2. 로딩 된 드라이버를 사용하여 커넥션 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String id = "scott";
-		String pass = "tiger";
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		MemberDTO mDTO = null;
+		GetConnection gc = GetConnection.getInstance();
+		
 		try {
-			con = DriverManager.getConnection(url, id, pass);
-			// 3. 쿼리문 생성 객체 얻기
-			stmt = con.createStatement();
+			con = gc.getConn();
 			// 4. 쿼리문 수행 후 결과 얻기 (cursor의 제어권을 얻기)
 			String selectMember = "select num, name, age, gender, tel, input_date from member order by num";
+			// 3. 쿼리문 생성 객체 얻기
+			pstmt = con.prepareStatement(selectMember);
 			// 조회결과를 움직일 수 있는 cursor의 제어권을 받음.
-			rs = stmt.executeQuery(selectMember);
+			rs = pstmt.executeQuery();
 
 			int num = 0; // 회원번호
 			String name = ""; // 회원명
@@ -185,7 +177,7 @@ public class PstmtMemberDAO {
 			String gender = ""; // 성별
 			String tel = ""; // 전화번호
 			Date inputDate = null;
-
+			MemberDTO mDTO=null;
 			while (rs.next()) { // 조회결과에 다음 레코드가 존재하는지
 				num = rs.getInt("num");
 				name = rs.getString("name");
@@ -203,43 +195,33 @@ public class PstmtMemberDAO {
 			}
 
 		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (con != null)
-				con.close();
-			if (rs != null)
-				rs.close();
+			gc.dbClose(con, pstmt, rs);
 		}
 
 		return list;
 	}
 
-	public MemberDTO selectOneMember(int memberNum) throws SQLException {
+	public MemberDTO selectOneMember(int memberNum) throws SQLException, IOException {
 		MemberDTO mDTO = null;
 
-		// 1. 드라이버 로딩
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		// 2. 커넥션 얻기
-		String url = "jdbc:oracle:thin:@localhost:1521:orcl";
-		String user = "scott";
-		String pwd = "tiger";
-
 		Connection con = null;
-		Statement stmt = null;
+		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		con = DriverManager.getConnection(url, user, pwd);
+		GetConnection gc = GetConnection.getInstance();
+
+		con = gc.getConn();
+		
 		// 3. 쿼리문 생성객체 얻기
-		stmt = con.createStatement();
 		StringBuilder selectOneMember = new StringBuilder();
 		selectOneMember.append("	SELECT NAME, AGE, GENDER, TEL, INPUT_DATE	").append("	FROM MEMBER	")
-				.append("	WHERE NUM =	").append(memberNum);
+		.append("	WHERE NUM =	?");
+		
+		pstmt = con.prepareStatement(selectOneMember.toString());
+		// 4. 바인드 변수에 값 설정
+		pstmt.setInt(1, memberNum);		
 
-		rs = stmt.executeQuery(selectOneMember.toString());
+		rs = pstmt.executeQuery();
 
 		if (rs.next()) { // 쿼리로 인한 조회 결과가 존재
 			mDTO = new MemberDTO();
@@ -254,21 +236,16 @@ public class PstmtMemberDAO {
 		// 4. 쿼리문 수행 후 결과 얻기
 		// 5. 연결 끊기
 
-		if (stmt != null)
-			stmt.close();
-		if (con != null)
-			con.close();
-		if (rs != null)
-			rs.close();
+		gc.dbClose(con, pstmt, rs);
 
 		return mDTO;
 	}
 
-	public String searchOneMember(int num) {
-		String searchMember = "";
-
-		return searchMember;
-	}
+//	public String searchOneMember(int num) {
+//		String searchMember = "";
+//
+//		return searchMember;
+//	}
 	
 	public static PstmtMemberDAO getInstance() {
 		if (instance == null) { // 객체가 생성되어 있지 않다면

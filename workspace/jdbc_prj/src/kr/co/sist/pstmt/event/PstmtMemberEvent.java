@@ -6,20 +6,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import kr.co.sist.pstmt.design.PstmtMemberDesign;
 import kr.co.sist.pstmt.design.PstmtMemberLeftPanel;
+import kr.co.sist.pstmt.design.PstmtMemberRightPanel;
 import kr.co.sist.pstmt.service.PstmtMemberService;
-import kr.co.sist.statement.design.MemberDesign;
-import kr.co.sist.statement.design.MemberLeftPanel;
 import kr.co.sist.statement.dto.MemberDTO;
-import kr.co.sist.statement.service.MemberService;
 
 public class PstmtMemberEvent extends WindowAdapter implements ActionListener, MouseListener{
 
@@ -37,40 +36,36 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	}
 	
 	public void searchOneMember() {
-		DefaultListModel<String> dlm = md.getMrp().getDlmMember();
-		JList<String> jl = md.getMrp().getJlMember();
-		String selectedMember = dlm.elementAt(jl.getSelectedIndex());
-		String[] memberArrData = selectedMember.split(",");
+		// JTable에 선택된 행의 컬럼 값을 얻어서 DB table에 한 행 조회 작업수행
+		PstmtMemberRightPanel pmrp = md.getMrp();
+		DefaultTableModel dtm = pmrp.getDtmMember();
+		JTable jt = pmrp.getJtMember();
 		
-		//선택한 회원의 번호 얻기
-		int memberNum = Integer.parseInt(memberArrData[0]);
-		MemberDTO mDTO = ms.searchOneMember(memberNum); //회원번호로 검색한 결과 DTO저장 반환
-		PstmtMemberLeftPanel mlp = md.getMlp();
+		int selectedRow = jt.getSelectedRow();
+		int selectedCol = jt.getSelectedColumn();
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd a");
+//		System.out.println(selectedRow + ", " + selectedCol);
+//		System.out.println(dtm.getValueAt(selectedRow, selectedCol));
 		
-		mlp.getJtfNum().setText(String.valueOf(mDTO.getNum()));
-		mlp.getJtfName().setText(mDTO.getName());
-		mlp.getJtfAge().setText(String.valueOf(mDTO.getAge()));
-		mlp.getJtfGender().setText(mDTO.getGender());
-		mlp.getJtfTel().setText(mDTO.getTel());
-		mlp.getJtfInputDate().setText(sdf.format(mDTO.getInput_date()));
-	}
-	
-	public void useSplit() {
-		DefaultListModel<String> dlm = md.getMrp().getDlmMember();
-		JList<String> jl = md.getMrp().getJlMember();
-		String selectedMember = dlm.elementAt(jl.getSelectedIndex());
-//		System.out.println(selectedMember);
-		String[] memberArrData = selectedMember.split(",");
-		//배열의 데이터를 JTextField에 설정
-		PstmtMemberLeftPanel mlp = md.getMlp();
-		mlp.getJtfNum().setText(memberArrData[0]);
-		mlp.getJtfName().setText(memberArrData[1]);
-		mlp.getJtfAge().setText(memberArrData[2]);
-		mlp.getJtfGender().setText(memberArrData[3]);
-		mlp.getJtfTel().setText(memberArrData[4]);
-		mlp.getJtfInputDate().setText(memberArrData[5]);
+		System.out.println(dtm.getValueAt(selectedRow, 0));
+		
+		//선택한 행의 회원번호를 얻어와서
+		int memberNum = Integer.parseInt((String)dtm.getValueAt(selectedRow, 0));
+		
+		PstmtMemberService pms = new PstmtMemberService();
+		//DB Table에서 조회를 수행하고
+		MemberDTO mDTO = pms.searchOneMember(memberNum);
+		
+		PstmtMemberLeftPanel plp = md.getMlp();
+		//왼쪽 패널에 JTextField에 설정
+		plp.getJtfNum().setText(String.valueOf(mDTO.getNum()));
+		plp.getJtfName().setText(mDTO.getName());
+		plp.getJtfAge().setText(String.valueOf(mDTO.getAge()));
+		plp.getJtfGender().setText(String.valueOf(mDTO.getGender()));
+		plp.getJtfTel().setText(String.valueOf(mDTO.getTel()));
+		plp.getJtfInputDate().setText(new SimpleDateFormat("yyyy-MM-dd hh:mm")
+				.format(mDTO.getInput_date()));
+		
 	}
 
 	@Override
@@ -102,7 +97,6 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	
 	public void removeMember() throws NumberFormatException{
 		PstmtMemberLeftPanel mlp = md.getMlp();
-
 		
 		if(mlp.getJtfNum().getText().trim().isEmpty()) {
 			JOptionPane.showMessageDialog(md, "회원을 먼저 선택 한 후 정보를 삭제해주세요.");
@@ -203,16 +197,33 @@ public class PstmtMemberEvent extends WindowAdapter implements ActionListener, M
 	 * 모든 회원을 검색하여 dlm에 설정하는 일
 	 */
 	public void searchAllMember() {
-		List<String> listMemberData = ms.searchAllMember();
+		//오른쪽 패널을 얻고
+		PstmtMemberRightPanel prp = md.getMrp();
+		//DefaultTable 모델을 얻기
+		DefaultTableModel dtmMember = prp.getDtmMember();
 		
-		DefaultListModel<String> dlm = md.getMrp().getDlmMember();
-		dlm.clear(); // 리스트모델을 초기화
+		PstmtMemberService pms = new PstmtMemberService();
+		//모든 회원 정보를 검색
+		List<MemberDTO> listMember = pms.searchAllMember();
+		//조회된 회원 정보를 사용하여 JTable에 Row로 추가
+		String[] rowData = null;
 		
-		if(listMemberData.isEmpty()) { //검색된 결과 없음.
-			dlm.addElement("가입된 회원 정보가 조재하지 않습니다.");
-		}
-		for(String recordData : listMemberData) {
-			dlm.addElement(recordData); // 리스트모델에 조회결과 추가
+		//테이블 행의 수를 초기화
+		dtmMember.setRowCount(0);
+		
+		//모든 레코드를 반복
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for(MemberDTO mDTO : listMember) {
+			rowData = new String[6]; // JTable의 컬럼의 개수
+			rowData[0] = String.valueOf(mDTO.getNum());
+			rowData[1] = mDTO.getName();
+			rowData[2] = String.valueOf(mDTO.getAge());
+			rowData[3] = mDTO.getGender();
+			rowData[4] = mDTO.getTel();
+			rowData[5] = sdf.format(mDTO.getInput_date());
+			
+			//배열의 값을 D.T.M에 행으로 설정
+			dtmMember.addRow(rowData);
 		}
 	}
 

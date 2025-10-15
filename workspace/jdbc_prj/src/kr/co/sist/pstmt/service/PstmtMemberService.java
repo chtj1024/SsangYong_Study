@@ -32,28 +32,16 @@ public class PstmtMemberService {
 		return flag;
 	}
 	
-	public List<String> searchAllMember() {
-		List<String> list = new ArrayList<String>();
-		StringBuilder searchMember = new StringBuilder();
+	public List<MemberDTO> searchAllMember() {
+		List<MemberDTO> list = null;
 		try {
 			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
-			
-			List<MemberDTO> tempList = pmDAO.selectAllMember();
-			SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy a", Locale.UK);
-			
-			for(MemberDTO mDTO : tempList) {
-				searchMember.delete(0, searchMember.length());
-				searchMember
-				.append(mDTO.getNum()).append(",")
-				.append(mDTO.getName()).append(",")
-				.append(mDTO.getAge()).append(",")
-				.append(mDTO.getGender()).append(",")
-				.append(mDTO.getTel()).append(",")
-				.append(sdf.format(mDTO.getInput_date()));
 				
-				list.add(searchMember.toString());
-			}
+			list = pmDAO.selectAllMember();
+			
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -66,6 +54,8 @@ public class PstmtMemberService {
 			PstmtMemberDAO pmDAO = PstmtMemberDAO.getInstance();
 			mDTO = pmDAO.selectOneMember(num);
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		

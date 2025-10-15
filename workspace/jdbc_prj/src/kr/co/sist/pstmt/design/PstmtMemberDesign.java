@@ -2,12 +2,10 @@ package kr.co.sist.pstmt.design;
 
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import kr.co.sist.pstmt.event.PstmtMemberEvent;
-import kr.co.sist.statement.event.MemberEvent;
 
 public class PstmtMemberDesign extends JFrame{
 		
@@ -40,7 +38,7 @@ public class PstmtMemberDesign extends JFrame{
 		
 		addWindowListener(me);
 		
-		setBounds(100, 100, 600, 300);
+		setBounds(100, 100, 1200, 300);
 		setVisible(true);
 	}
 
