@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workbench progressCount="16" version="2.0">
 <workbenchAdvisor/>
-<window height="1423" maximized="true" width="1551" x="627" y="124">
+<window height="1426" minimized="true" width="1551" x="536" y="347">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -26,14 +26,10 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
-<part id="1"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="com.tomato.exerd.editor.DiagramEditor" name="member.exerd" partName="member.exerd" path="C:/dev/workspace_erd/test_erd/member.exerd" title="member.exerd" tooltip="test_erd/member.exerd" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/test_erd/member.exerd"/>
-</editor>
 <editor activePart="true" focus="true" id="com.tomato.exerd.editor.DiagramEditor" name="emp_team4.exerd" partName="emp_team4.exerd" path="C:/dev/workspace_erd/test_erd/emp_team4.exerd" title="emp_team4.exerd" tooltip="test_erd/emp_team4.exerd" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/test_erd/emp_team4.exerd"/>
 </editor>
@@ -182,6 +178,10 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/temp_first_project_emp.exerd"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/team3_erd_ver2.exerd"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/emp_team4.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/day0925.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/practice_NF.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/temp_first_project_emp.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/test_erd/team3_erd_ver2.exerd"/>
 </editors>
 <item historyLabel="day0923.exerd" index="0"/>
 <item historyLabel="day0925.exerd" index="1"/>
@@ -199,6 +199,12 @@
 <item historyLabel="member.exerd" index="8"/>
 <item historyLabel="team3_erd_ver2.exerd" index="11"/>
 <item historyLabel="member.exerd" index="8"/>
+<item historyLabel="emp_team4.exerd" index="12"/>
+<item historyLabel="day0925.exerd" index="13"/>
+<item historyLabel="practice_NF.exerd" index="14"/>
+<item historyLabel="temp_first_project_emp.exerd" index="15"/>
+<item historyLabel="team3_erd_ver2.exerd" index="16"/>
+<item historyLabel="temp_first_project_emp.exerd" index="15"/>
 <item active="true" historyLabel="emp_team4.exerd" index="12"/>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -206,14 +212,6 @@
 <workbenchWindowAdvisor/>
 <actionBarAdvisor/>
 <trimLayout>
-<trimArea IMemento.internal.id="16384">
-<trimItem IMemento.internal.id="leftFolder"/>
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@6c6f24"/>
-</trimArea>
-<trimArea IMemento.internal.id="131072">
-<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@b917d0"/>
-<trimItem IMemento.internal.id="rightFolder"/>
-</trimArea>
 <trimArea IMemento.internal.id="128">
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
 </trimArea>
@@ -221,16 +219,24 @@
 <trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
 <trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
 <trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
-<trimItem IMemento.internal.id="bottomFolder"/>
 </trimArea>
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="emp_team4.exerd" tooltip="test_erd/emp_team4.exerd">
-<persistable path="/test_erd/emp_team4.exerd"/>
-</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="team3_erd_ver2.exerd" tooltip="test_erd/team3_erd_ver2.exerd">
 <persistable path="/test_erd/team3_erd_ver2.exerd"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="temp_first_project_emp.exerd" tooltip="test_erd/temp_first_project_emp.exerd">
+<persistable path="/test_erd/temp_first_project_emp.exerd"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="practice_NF.exerd" tooltip="test_erd/practice_NF.exerd">
+<persistable path="/test_erd/practice_NF.exerd"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="day0925.exerd" tooltip="test_erd/day0925.exerd">
+<persistable path="/test_erd/day0925.exerd"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="emp_team4.exerd" tooltip="test_erd/emp_team4.exerd">
+<persistable path="/test_erd/emp_team4.exerd"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="1team.exerd" tooltip="test_erd/1team.exerd">
 <persistable path="/test_erd/1team.exerd"/>
@@ -240,9 +246,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="member.exerd" tooltip="test_erd/member.exerd">
 <persistable path="/test_erd/member.exerd"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="day0925.exerd" tooltip="test_erd/day0925.exerd">
-<persistable path="/test_erd/day0925.exerd"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="day0923.exerd" tooltip="test_erd/day0923.exerd">
 <persistable path="/test_erd/day0923.exerd"/>
