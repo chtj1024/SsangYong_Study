@@ -24,8 +24,14 @@ public class UpdateSalDesign extends JDialog{
 	
 	private JButton jbtnUpdateSal;
 	
+	private int emp_id;
+	private String name;
+	
 	public UpdateSalDesign(JFrame parent, int emp_id, String name) {
 		super(parent, "연봉 수정", true);
+		this.emp_id = emp_id;
+		this.name = name;
+		
 		UpdateSalEvt use = new UpdateSalEvt(this);
 		
 		// 상단패널 : 선택한 사번, 이름 출력 및 연봉 수정란과 수정버튼
@@ -59,6 +65,8 @@ public class UpdateSalDesign extends JDialog{
 		addWindowListener(use);
 		// 행을 클릭했을 때 발생하는 이벤트 연동
 		jtSal.getSelectionModel().addListSelectionListener(use);
+		// 수정버튼과 이벤트 연동
+		jbtnUpdateSal.addActionListener(use);
 		
 		setBounds(200, 200, 500, 400);
 		setVisible(true);
@@ -67,7 +75,7 @@ public class UpdateSalDesign extends JDialog{
 	public void UpdateSalConfirmDesign() {
 		
 	}
-	
+
 	public JLabel getLblSalInfo() {
 		return lblSalInfo;
 	}
@@ -87,5 +95,15 @@ public class UpdateSalDesign extends JDialog{
 	public JButton getJbtnUpdateSal() {
 		return jbtnUpdateSal;
 	}
+
+	public int getEmp_id() {
+		return emp_id;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	
 	
 }

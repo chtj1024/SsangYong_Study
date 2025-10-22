@@ -11,14 +11,6 @@ join    position po on e.pos_code = po.pos_code
 join    department d on d.dept_code = e.dept_code
 order by    e.emp_id;
 
--- 연봉 화면 조회
-select e.emp_id, name, dname, pname, sal
-from    employee e
-join    salary  s on e.sal_code = s.sal_code
-join    position po on e.pos_code = po.pos_code
-join    department d on d.dept_code = e.dept_code
-order by e.emp_id;
-
 -- 연봉 값 자체를 수정하기 위한
 select e.emp_id, name, sal
 from    employee e
@@ -35,15 +27,15 @@ join    salary  s on e.sal_code = s.sal_code;
 
 -- 임시 업데이트
 update employee
-set    sal_code = 504
-where  emp_id = 1010;
+set    sal_code = 501
+where  emp_id = 1001;
 
 --해당 사번의 연봉코드를 변경
-update  employee e
-set     e.sal_code = ?
-where   e.emp_id = ?
-and     exists (
-    select  1
-    from    salary s
-    where   s.sal_code = ?
-);
+--update  employee e
+--set     e.sal_code = ?
+--where   e.emp_id = ?
+--and     exists (
+--    select  1
+--    from    salary s
+--    where   sal_code = ?
+--);

@@ -30,6 +30,7 @@ public class SalAndPayDesign extends JFrame{
 		super("연봉/급여/보너스 수정");
 		SalAndPayEvt sape = new SalAndPayEvt(this);
 		
+		
 		// 탭 선언
 		jtpSalAndPay = new JTabbedPane();
 		

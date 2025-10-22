@@ -29,7 +29,7 @@ public class SalAndPayEvt extends WindowAdapter implements ActionListener {
 	 * @return : 연봉과 사원정보들
 	 */
 	public Object[][] loadSalEmp() {
-//		saps = new SalAndPayService();
+		
 		List<SalAndPayDTO> list = saps.selectSalEmp();
 		Object[][] data = new Object[list.size()][5];
 		
