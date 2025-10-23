@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import sal.and.pay.dao.SalAndPayDAO;
+import sal.and.pay.dto.PayDateDTO;
 import sal.and.pay.dto.SalAndPayDTO;
 
 public class SalAndPayService {
@@ -59,5 +60,19 @@ public class SalAndPayService {
 		}
 		
 		return flag;
+	}
+	
+	public List<PayDateDTO> selectPayDate() {
+		List<PayDateDTO> list = null;
+		
+		try {
+			list = sDAO.selectPayDate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 }

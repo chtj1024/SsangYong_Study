@@ -2,9 +2,11 @@ package sal.and.pay.design;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.List;
+import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,23 +14,32 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import sal.and.pay.dto.SalAndPayDTO;
 import sal.and.pay.event.SalAndPayEvt;
-import sal.and.pay.service.SalAndPayService;
 
 public class SalAndPayDesign extends JFrame{
 	
 	private JTabbedPane jtpSalAndPay;
 	private CardLayout clPayDate, clPayRecords;
-	private JButton jbtnSalUpdate;
-	private DefaultTableModel dtmYearSal;
-	private JTable jtYearSal;
+	private JButton jbtnSalUpdate, jbtnCheckBonus;
+	private DefaultTableModel dtmYearSal, dtmPayDate;
+	private JTable jtYearSal, jtPayDate;
+	private JLabel jlbPayDate;
+	
+	// 연봉 업데이트 후 기존 연봉 테이블을 최신화 하기 위하여 이벤트를 UpdateSalDesign으로 전달하기 위한 선언
+	private SalAndPayEvt sape;
+	
+	private JPanel jpCard;
+	
+	// 지급예정, 지급기록 CardLayout 전환 버튼
+	private JButton jbtnShowPayDate, jbtnShowPayRecords;
+	
 	
 	public SalAndPayDesign() {
 		super("연봉/급여/보너스 수정");
-		SalAndPayEvt sape = new SalAndPayEvt(this);
+		sape = new SalAndPayEvt(this);
 		
 		
 		// 탭 선언
@@ -57,9 +68,30 @@ public class SalAndPayDesign extends JFrame{
 		salPanel.add(scrollPane, BorderLayout.CENTER);
 		
 		// 급여 탭
-		JPanel payPanel = new JPanel();
+		JPanel payPanel = new JPanel(new BorderLayout());
 		
+		// 상단 제어 버튼 패널
+		JPanel jpTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		jbtnShowPayDate = new JButton("지급예정");
+		jbtnShowPayRecords = new JButton("지급기록");
+		jpTop.add(jbtnShowPayDate);
+		jpTop.add(jbtnShowPayRecords);
+				
+		clPayDate = new CardLayout();
+		jpCard = new JPanel(clPayDate);
 		
+		// 지급예정 부분 CardLayout
+		JPanel jpPayDate = payDatePanel();
+		// (지급기록 카드 등은 추후 추가 가능)
+		jpCard.add(jpPayDate, "PAY_DATE");
+		
+		// 2. 두 번째 카드 (지급기록) - 임시 패널 추가
+		JPanel jpPayRecords = new JPanel(new BorderLayout());
+		jpPayRecords.add(new JLabel("여기는 지급 기록 (Pay Records) 카드입니다.", SwingConstants.CENTER));
+		jpCard.add(jpPayRecords, "PAY_RECORDS"); 
+		
+		payPanel.add(jpTop, BorderLayout.NORTH);
+		payPanel.add(jpCard, BorderLayout.CENTER);
 		
 		jtpSalAndPay.addTab("연봉", salPanel);
 		jtpSalAndPay.addTab("급여", payPanel);
@@ -68,9 +100,54 @@ public class SalAndPayDesign extends JFrame{
 		
 		addWindowListener(sape);
 		jbtnSalUpdate.addActionListener(sape);
+		jbtnShowPayDate.addActionListener(sape);
+		jbtnShowPayRecords.addActionListener(sape);
+		jbtnCheckBonus.addActionListener(sape);
 		
-		setBounds(100, 100, 500, 400);
+		setBounds(100, 100, 900, 600);
 		setVisible(true);
+	}
+
+	private JPanel payDatePanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		
+		panel.setBorder(BorderFactory.createEmptyBorder(10,15,15,15));
+		
+		// 상단
+		JPanel jpTop = new JPanel(new BorderLayout());
+		
+		// 지급예정일 계산
+		jlbPayDate = new JLabel("지급예정일 : " + sape.nextPayDate(), SwingConstants.LEFT);
+		jlbPayDate.setFont(new Font("맑은 고딕", Font.BOLD, 14));
+		
+		jbtnCheckBonus = new JButton("보너스 확인");
+		jbtnCheckBonus.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+		
+		jpTop.add(jlbPayDate, BorderLayout.WEST);
+		jpTop.add(jbtnCheckBonus, BorderLayout.EAST);
+		
+		//테이블 영역
+		String[] columns = {"사번", "이름", "월급(세전)", "세금", "보너스", "실지급액"};
+		Object[][] data = sape.loadPayDate();
+		
+		dtmPayDate = new DefaultTableModel(data, columns) {
+			//셀 수정 불가 처리
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		jtPayDate = new JTable(dtmPayDate);
+		jtPayDate.setRowHeight(25);
+		jtPayDate.getTableHeader().setReorderingAllowed(false);
+		
+		JScrollPane jsp = new JScrollPane(jtPayDate);
+		
+		panel.add(jpTop, BorderLayout.NORTH);
+		panel.add(jsp, BorderLayout.CENTER);	
+		
+		
+		return panel;
 	}
 
 	public JTabbedPane getJtpSalAndPay() {
@@ -89,12 +166,44 @@ public class SalAndPayDesign extends JFrame{
 		return jbtnSalUpdate;
 	}
 
+	public JButton getJbtnCheckBonus() {
+		return jbtnCheckBonus;
+	}
+
 	public DefaultTableModel getDtmYearSal() {
 		return dtmYearSal;
 	}
 
+	public DefaultTableModel getDtmPayDate() {
+		return dtmPayDate;
+	}
+
 	public JTable getJtYearSal() {
 		return jtYearSal;
+	}
+
+	public JTable getJtPayDate() {
+		return jtPayDate;
+	}
+
+	public JLabel getJlbPayDate() {
+		return jlbPayDate;
+	}
+
+	public SalAndPayEvt getSape() {
+		return sape;
+	}
+
+	public JPanel getJpCard() {
+		return jpCard;
+	}
+
+	public JButton getJbtnShowPayDate() {
+		return jbtnShowPayDate;
+	}
+
+	public JButton getJbtnShowPayRecords() {
+		return jbtnShowPayRecords;
 	}
 	
 }

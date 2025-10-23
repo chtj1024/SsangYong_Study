@@ -2,15 +2,11 @@ package sal.and.pay.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -22,10 +18,12 @@ public class UpdateSalEvt extends WindowAdapter implements ListSelectionListener
 
 	private UpdateSalDesign usd;
 	private SalAndPayService saps;
+	private SalAndPayEvt sape;
 	
-	public UpdateSalEvt(UpdateSalDesign usd) {
+	public UpdateSalEvt(UpdateSalDesign usd, SalAndPayEvt sape) {
 		this.usd = usd;
 		saps = new SalAndPayService();
+		this.sape = sape;
 	}
 	
 	/**
@@ -74,13 +72,17 @@ public class UpdateSalEvt extends WindowAdapter implements ListSelectionListener
 					sDTO.setSal_code(codeSal);
 					sDTO.setSal(intSal);
 					
-					System.out.println(usd.getEmp_id() +" / " + codeSal + " / "+ intSal);
-					
 					saps.updateSal(sDTO); // 해당 사원의 연봉정보 업데이트
 					
 					JOptionPane.showMessageDialog(null, "해당 사원의 연봉정보가 업데이트 되었습니다.");
 					
+					// 사원들의 연봉 테이블 최신화
+					sape.refreshYearSalTable();
+					
 					found = true;
+					
+					usd.dispose();
+					
 					break;
 				}
 			}

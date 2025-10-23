@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import connection.GetConnection;
+import sal.and.pay.dto.PayDateDTO;
 import sal.and.pay.dto.SalAndPayDTO;
 
 public class SalAndPayDAO {
@@ -141,6 +142,62 @@ public class SalAndPayDAO {
 		}
 		
 		return flag;
+	}
+	
+	public List<PayDateDTO> selectPayDate() throws SQLException, IOException {
+		List<PayDateDTO> list = new ArrayList<PayDateDTO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		GetConnection gc = GetConnection.getInstance();
+		
+		try {
+			con = gc.getConn();
+			
+			String selectEmp = "select  e.emp_id, e.name, "
+					+ "			max(case when p.pay_type = 1 then p.pay end) as pay, "
+					+ "			nvl(sum(case when p.pay_type = 2 then p.pay end), 0) as bonus "
+					+ "from    employee e "
+					+ "join    payroll p on e.emp_id = p.emp_id "
+					+ "where   p.pay_date between "
+					+ "			ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24 "
+					+ "			and "
+					+ "			ADD_MONTHS(TRUNC(sysdate, 'MM'), 0) + 24 "
+					+ "group by e.emp_id, e.name "
+					+ "order by e.emp_id ";
+			
+			pstmt = con.prepareStatement(selectEmp);
+			
+			rs = pstmt.executeQuery();
+			
+			int emp_id = 0;
+			String name = "";
+			int pay = 0;
+			int duty = 0;
+			int bonus = 0;
+			int realPay = 0;
+			
+			PayDateDTO pDTO = null;
+			while(rs.next()) {
+				emp_id = rs.getInt("emp_id");
+				name = rs.getString("name");
+				pay = rs.getInt("pay");
+				duty = (int)(pay * 0.033);
+				bonus = rs.getInt("bonus");
+				realPay = pay - duty + bonus;
+				
+				pDTO = new PayDateDTO(emp_id, pay, duty, bonus, realPay, name);
+				list.add(pDTO);
+			}			
+			
+		} finally {
+			gc.dbClose(con, pstmt, rs);
+		}
+		
+		// JTable은 2차원배열로 출력할 수 있기 때문에 2차원배열로 반환
+		return list;
 	}
 	
 	public static SalAndPayDAO getInstance() {

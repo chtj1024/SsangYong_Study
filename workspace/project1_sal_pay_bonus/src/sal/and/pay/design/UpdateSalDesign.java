@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import sal.and.pay.event.SalAndPayEvt;
 import sal.and.pay.event.UpdateSalEvt;
 
 public class UpdateSalDesign extends JDialog{
@@ -32,7 +33,10 @@ public class UpdateSalDesign extends JDialog{
 		this.emp_id = emp_id;
 		this.name = name;
 		
-		UpdateSalEvt use = new UpdateSalEvt(this);
+		// 부모테이블의 테이블을 최신화 하기위해 부모의 Event를 가져옴.
+		SalAndPayEvt mainEvt = ((SalAndPayDesign)parent).getSape();
+		
+		UpdateSalEvt use = new UpdateSalEvt(this, mainEvt);
 		
 		// 상단패널 : 선택한 사번, 이름 출력 및 연봉 수정란과 수정버튼
 		JPanel jpTop = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
@@ -103,7 +107,5 @@ public class UpdateSalDesign extends JDialog{
 	public String getName() {
 		return name;
 	}
-	
-	
 	
 }
