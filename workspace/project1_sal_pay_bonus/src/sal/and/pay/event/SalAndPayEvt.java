@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import sal.and.pay.design.AddBonusDesign;
 import sal.and.pay.design.SalAndPayDesign;
 import sal.and.pay.design.UpdateSalDesign;
 import sal.and.pay.dto.PayDateDTO;
@@ -100,6 +101,16 @@ public class SalAndPayEvt extends WindowAdapter implements ActionListener {
 		return data;
 	}
 	
+	public void refreshPayDateTable() {
+		sapd.getDtmPayDate().setRowCount(0);
+		
+		Object[][] newData = loadPayDate();
+		
+		for(Object[] row : newData) {
+			sapd.getDtmPayDate().addRow(row);
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// 연봉수정 버튼 클릭 시 행을 클릭했는가
@@ -121,12 +132,15 @@ public class SalAndPayEvt extends WindowAdapter implements ActionListener {
 			sapd.getClPayDate().show(sapd.getJpCard(), "PAY_RECORDS");
 		}
 		
+		// 보너스 확인 버튼을 클릭했을 때
 		if (e.getSource() == sapd.getJbtnCheckBonus()) {
 			int selectedRow = sapd.getJtPayDate().getSelectedRow();
 			if (selectedRow == -1) {
 				JOptionPane.showMessageDialog(null, "한 명의 사원을 선택해주세요");
 			} else {
-				System.out.println("보너스 확인 : 행 눌러짐");
+				int emp_id = (int) sapd.getJtPayDate().getValueAt(selectedRow, 0); // 사번
+				String name = (String) sapd.getJtPayDate().getValueAt(selectedRow, 1); // 이름
+				new AddBonusDesign(sapd, emp_id, name);
 			}
 		}
 	}

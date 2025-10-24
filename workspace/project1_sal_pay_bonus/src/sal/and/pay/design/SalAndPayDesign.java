@@ -24,8 +24,8 @@ public class SalAndPayDesign extends JFrame{
 	private JTabbedPane jtpSalAndPay;
 	private CardLayout clPayDate, clPayRecords;
 	private JButton jbtnSalUpdate, jbtnCheckBonus;
-	private DefaultTableModel dtmYearSal, dtmPayDate;
-	private JTable jtYearSal, jtPayDate;
+	private DefaultTableModel dtmYearSal, dtmPayDate, dtmPayRecords;
+	private JTable jtYearSal, jtPayDate, jtPayRecords;
 	private JLabel jlbPayDate;
 	
 	// 연봉 업데이트 후 기존 연봉 테이블을 최신화 하기 위하여 이벤트를 UpdateSalDesign으로 전달하기 위한 선언
@@ -35,7 +35,8 @@ public class SalAndPayDesign extends JFrame{
 	
 	// 지급예정, 지급기록 CardLayout 전환 버튼
 	private JButton jbtnShowPayDate, jbtnShowPayRecords;
-	
+	// 지급기록검색, 검색초기화(테이블 초기화) 버튼
+	private JButton jbtnSearchPayRecodes, jbtnResetSearch;
 	
 	public SalAndPayDesign() {
 		super("연봉/급여/보너스 수정");
@@ -86,8 +87,7 @@ public class SalAndPayDesign extends JFrame{
 		jpCard.add(jpPayDate, "PAY_DATE");
 		
 		// 2. 두 번째 카드 (지급기록) - 임시 패널 추가
-		JPanel jpPayRecords = new JPanel(new BorderLayout());
-		jpPayRecords.add(new JLabel("여기는 지급 기록 (Pay Records) 카드입니다.", SwingConstants.CENTER));
+		JPanel jpPayRecords = payRecordsPanel();
 		jpCard.add(jpPayRecords, "PAY_RECORDS"); 
 		
 		payPanel.add(jpTop, BorderLayout.NORTH);
@@ -150,6 +150,44 @@ public class SalAndPayDesign extends JFrame{
 		return panel;
 	}
 
+	private JPanel payRecordsPanel() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
+		
+		// 상단 버튼
+		JPanel jpTop = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+		jbtnResetSearch = new JButton("검색초기화");
+		jbtnSearchPayRecodes = new JButton("지급기록검색");
+		
+		jbtnResetSearch.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+		jbtnSearchPayRecodes.setFont(new Font("맑은 고딕", Font.PLAIN, 13));
+		
+		jpTop.add(jbtnResetSearch);
+		jpTop.add(jbtnSearchPayRecodes);
+		
+		String[] columns = {"지급번호", "사번", "이름", "지급날짜", "월급(세전)", "세금", "보너스", "실지급액"};
+		
+		// DB에서 불러올 데이터
+		
+		dtmPayRecords = new DefaultTableModel(columns, 0) {
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false; // 셀 수정 불가
+	        }
+	    };
+		
+	    jtPayRecords = new JTable(dtmPayRecords);
+	    jtPayRecords.setRowHeight(25);
+	    jtPayRecords.getTableHeader().setReorderingAllowed(false);
+	    
+	    JScrollPane jspPayRecords = new JScrollPane(jtPayRecords);
+	    
+	    panel.add(jpTop, BorderLayout.NORTH);
+	    panel.add(jspPayRecords, BorderLayout.CENTER);
+	    
+		return panel;
+	}
+	
 	public JTabbedPane getJtpSalAndPay() {
 		return jtpSalAndPay;
 	}

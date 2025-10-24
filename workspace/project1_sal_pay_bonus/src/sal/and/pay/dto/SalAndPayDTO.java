@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class SalAndPayDTO {
 	private int emp_id, sal_code, sal, pay, pay_type, pay_id;
-	private String name, dName, pName;
+	private String name, dName, pName, pay_note;
 	private Date pay_date;
 	
 	public SalAndPayDTO() {
@@ -12,7 +12,7 @@ public class SalAndPayDTO {
 	}
 
 	public SalAndPayDTO(int emp_id, int sal_code, int sal, int pay, int pay_type, int pay_id, String name, String dName,
-			String pName, Date pay_date) {
+			String pName, String pay_note, Date pay_date) {
 		super();
 		this.emp_id = emp_id;
 		this.sal_code = sal_code;
@@ -23,6 +23,7 @@ public class SalAndPayDTO {
 		this.name = name;
 		this.dName = dName;
 		this.pName = pName;
+		this.pay_note = pay_note;
 		this.pay_date = pay_date;
 	}
 
@@ -98,6 +99,14 @@ public class SalAndPayDTO {
 		this.pName = pName;
 	}
 
+	public String getPay_note() {
+		return pay_note;
+	}
+
+	public void setPay_note(String pay_note) {
+		this.pay_note = pay_note;
+	}
+
 	public Date getPay_date() {
 		return pay_date;
 	}
@@ -110,7 +119,7 @@ public class SalAndPayDTO {
 	public String toString() {
 		return "SalAndPayDTO [emp_id=" + emp_id + ", sal_code=" + sal_code + ", sal=" + sal + ", pay=" + pay
 				+ ", pay_type=" + pay_type + ", pay_id=" + pay_id + ", name=" + name + ", dName=" + dName + ", pName="
-				+ pName + ", pay_date=" + pay_date + "]";
+				+ pName + ", pay_note=" + pay_note + ", pay_date=" + pay_date + "]";
 	}
 	
 }

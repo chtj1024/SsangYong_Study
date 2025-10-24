@@ -55,7 +55,7 @@ public class SalAndPayDAO {
 				pName = rs.getString("pname");
 				
 				sDTO = new SalAndPayDTO(emp_id, 0, sal, 0, 0,
-						0, name, dName, pName, null);
+						0, name, dName, pName, "", null);
 				list.add(sDTO);
 			}
 			
@@ -96,7 +96,7 @@ public class SalAndPayDAO {
 				sal = rs.getInt("sal");
 				
 				sDTO = new SalAndPayDTO(0, sal_code, sal, 0, 0,
-						0, "", "", "", null);
+						0, "", "", "", "",null);
 				list.add(sDTO);
 			}
 			
@@ -198,6 +198,78 @@ public class SalAndPayDAO {
 		
 		// JTable은 2차원배열로 출력할 수 있기 때문에 2차원배열로 반환
 		return list;
+	}
+
+	public List<SalAndPayDTO> selectBonus(int emp_id) throws SQLException, IOException {
+		List<SalAndPayDTO> list = new ArrayList<SalAndPayDTO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		GetConnection gc = GetConnection.getInstance();
+		
+		try {
+			con = gc.getConn();
+			
+			String selectEmp = "select  pay, pay_date, pay_note "
+					+ "from    payroll "
+					+ "where   emp_id = ? " // 나중에 보너스추가 창에서 이자리 ?로 수정
+					+ "			and pay_type = 2 "
+					+ "order by pay_date desc ";
+			
+			pstmt = con.prepareStatement(selectEmp);
+			
+			pstmt.setInt(1, emp_id);
+			
+			rs = pstmt.executeQuery();
+			
+			int pay = 0;
+			Date pay_date = null;
+			String pay_note = "";
+			
+			SalAndPayDTO sDTO = null;
+			while(rs.next()) {
+				pay = rs.getInt("pay");
+				pay_date = rs.getDate("pay_date");
+				pay_note = rs.getString("pay_note");
+				
+				sDTO = new SalAndPayDTO(0, 0, 0, pay, 0, 0, "", "", "", pay_note, pay_date);
+				list.add(sDTO);
+			}			
+			
+		} finally {
+			gc.dbClose(con, pstmt, rs);
+		}
+		
+		// JTable은 2차원배열로 출력할 수 있기 때문에 2차원배열로 반환
+		return list;
+	}
+	
+	public int insertBonus(SalAndPayDTO sDTO) throws SQLException{
+		int rowCnt = 0;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		GetConnection gc = GetConnection.getInstance();
+		try {
+			con = gc.getConn();
+			
+			String insertBonus = "insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note) "
+					+ "values(pay_seq.nextval, ?, to_date(sysdate, 'yy-MM-dd'), ?, 2, ?) ";
+			
+			pstmt = con.prepareStatement(insertBonus);
+			pstmt.setInt(1, sDTO.getEmp_id());
+			pstmt.setInt(2, sDTO.getPay());
+			pstmt.setString(3, sDTO.getPay_note());
+			
+			rowCnt = pstmt.executeUpdate();
+		} catch(IOException ie) {
+			ie.printStackTrace();
+		} finally {
+			gc.dbClose(con, pstmt, null);
+		}
+		return rowCnt;
 	}
 	
 	public static SalAndPayDAO getInstance() {

@@ -40,8 +40,6 @@ join    salary  s on e.sal_code = s.sal_code;
 --    where   sal_code = ?
 --);
 
-select * from payroll;
-
 -- 지급예정 테이블
 select  e.emp_id, e.name,
         max(case when p.pay_type = 1 then p.pay end) as pay,
@@ -55,8 +53,21 @@ where   p.pay_date between
 group by e.emp_id, e.name
 order by e.emp_id;
 
-
-
+-- 한 사원의 보너스 기록 가져오기
+select  pay, pay_date, pay_note
+from    payroll
+where   pay_type = 2
+order by pay_date desc;
+ 
 -- 보너스 가데이터 추가
 --insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note)
 --values(pay_seq.nextval, 1002, to_date('2025-10-21', 'yyyy-MM-dd'), 500000, 2, '9월초과 업무 수당');
+
+select * from payroll;
+
+select ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24, ADD_MONTHS(TRUNC(sysdate, 'MM'), 0) + 24
+from dual;
+
+-- 한 사원의 보너스 추가
+insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note)
+values(pay_seq.nextval, 1002, to_date(sysdate, 'yy-MM-dd'), 500000, 2, '이달의 성실 근무사원 선정');

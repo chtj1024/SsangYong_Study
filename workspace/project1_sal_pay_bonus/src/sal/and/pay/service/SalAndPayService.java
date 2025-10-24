@@ -75,4 +75,29 @@ public class SalAndPayService {
 		
 		return list;
 	}
+	
+	public List<SalAndPayDTO> selectBonus(int emp_id) {
+		List<SalAndPayDTO> list = null;
+		
+		try {
+			list = sDAO.selectBonus(emp_id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+		return list;
+	}
+	
+	public boolean insertBonus(SalAndPayDTO sDTO) {
+		boolean flag = false;
+		
+		try {
+			flag = sDAO.insertBonus(sDTO) == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return flag;
+	}
 }
