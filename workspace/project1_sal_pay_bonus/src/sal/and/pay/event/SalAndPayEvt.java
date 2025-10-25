@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import sal.and.pay.design.AddBonusDesign;
 import sal.and.pay.design.SalAndPayDesign;
+import sal.and.pay.design.SelectPayRecordsDesign;
 import sal.and.pay.design.UpdateSalDesign;
 import sal.and.pay.dto.PayDateDTO;
 import sal.and.pay.dto.SalAndPayDTO;
@@ -143,8 +144,71 @@ public class SalAndPayEvt extends WindowAdapter implements ActionListener {
 				new AddBonusDesign(sapd, emp_id, name);
 			}
 		}
+		
+		// 지급기록검색 버튼을 눌렀을 때
+		if (e.getSource() == sapd.getJbtnSearchPayRecodes()) {
+			new SelectPayRecordsDesign(sapd);
+		}
+		if (e.getSource() == sapd.getJbtnResetSearch()) {
+			resetPayRecordsTable();
+			JOptionPane.showMessageDialog(null, "조건검색을 초기화 하였습니다.");
+		}
 	}
 
+	public Object[][] loadPayRecords() {
+		
+		List<PayDateDTO> list = saps.selectPayRecords();
+		Object[][] data = new Object[list.size()][8];
+		
+		for(int i = 0; i < list.size(); i++) {
+			PayDateDTO payRecordsValues = list.get(i);
+			data[i] = new Object[]{
+					payRecordsValues.getPay_id(),
+					payRecordsValues.getEmp_id(),
+					payRecordsValues.getName(),
+					payRecordsValues.getPay_date(),
+					payRecordsValues.getPay(),
+					payRecordsValues.getDuty(),
+					payRecordsValues.getBonus(),
+					payRecordsValues.getRealPay()};
+		}
+		return data;
+	}
+	
+	public void loadConditionPayRecords(String where) {
+		List<PayDateDTO> list = saps.conditonSelectPayRecords(where);
+		Object[][] data = new Object[list.size()][8];
+		
+		for(int i = 0; i < list.size(); i++) {
+			PayDateDTO payRecordsValues = list.get(i);
+			data[i] = new Object[]{
+					payRecordsValues.getPay_id(),
+					payRecordsValues.getEmp_id(),
+					payRecordsValues.getName(),
+					payRecordsValues.getPay_date(),
+					payRecordsValues.getPay(),
+					payRecordsValues.getDuty(),
+					payRecordsValues.getBonus(),
+					payRecordsValues.getRealPay()};
+		}
+		
+		sapd.getDtmPayRecords().setRowCount(0);
+			
+		for(Object[] row : data) {
+			sapd.getDtmPayRecords().addRow(row);
+		}
+	}
+	
+	public void resetPayRecordsTable() {
+		sapd.getDtmPayRecords().setRowCount(0);
+		
+		Object[][] newData = loadPayRecords();
+		
+		for(Object[] row : newData) {
+			sapd.getDtmPayRecords().addRow(row);
+		}
+	}
+	
 	@Override
 	public void windowClosing(WindowEvent e) {
 		sapd.dispose();

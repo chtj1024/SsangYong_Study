@@ -1,9 +1,11 @@
 package sal.and.pay.dto;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 public class SalAndPayDTO {
-	private int emp_id, sal_code, sal, pay, pay_type, pay_id;
+	private int emp_id, sal_code, sal, pay_type, pay_id;
+	private long pay;
 	private String name, dName, pName, pay_note;
 	private Date pay_date;
 	
@@ -11,15 +13,15 @@ public class SalAndPayDTO {
 		
 	}
 
-	public SalAndPayDTO(int emp_id, int sal_code, int sal, int pay, int pay_type, int pay_id, String name, String dName,
-			String pName, String pay_note, Date pay_date) {
+	public SalAndPayDTO(int emp_id, int sal_code, int sal, int pay_type, int pay_id, long pay, String name,
+			String dName, String pName, String pay_note, Date pay_date) {
 		super();
 		this.emp_id = emp_id;
 		this.sal_code = sal_code;
 		this.sal = sal;
-		this.pay = pay;
 		this.pay_type = pay_type;
 		this.pay_id = pay_id;
+		this.pay = pay;
 		this.name = name;
 		this.dName = dName;
 		this.pName = pName;
@@ -51,14 +53,6 @@ public class SalAndPayDTO {
 		this.sal = sal;
 	}
 
-	public int getPay() {
-		return pay;
-	}
-
-	public void setPay(int pay) {
-		this.pay = pay;
-	}
-
 	public int getPay_type() {
 		return pay_type;
 	}
@@ -73,6 +67,14 @@ public class SalAndPayDTO {
 
 	public void setPay_id(int pay_id) {
 		this.pay_id = pay_id;
+	}
+
+	public long getPay() {
+		return pay;
+	}
+
+	public void setPay(long pay) {
+		this.pay = pay;
 	}
 
 	public String getName() {
@@ -117,9 +119,9 @@ public class SalAndPayDTO {
 
 	@Override
 	public String toString() {
-		return "SalAndPayDTO [emp_id=" + emp_id + ", sal_code=" + sal_code + ", sal=" + sal + ", pay=" + pay
-				+ ", pay_type=" + pay_type + ", pay_id=" + pay_id + ", name=" + name + ", dName=" + dName + ", pName="
-				+ pName + ", pay_note=" + pay_note + ", pay_date=" + pay_date + "]";
+		return "SalAndPayDTO [emp_id=" + emp_id + ", sal_code=" + sal_code + ", sal=" + sal + ", pay_type=" + pay_type
+				+ ", pay_id=" + pay_id + ", pay=" + pay + ", name=" + name + ", dName=" + dName + ", pName=" + pName
+				+ ", pay_note=" + pay_note + ", pay_date=" + pay_date + "]";
 	}
-	
+
 }

@@ -14,7 +14,8 @@ order by    e.emp_id;
 -- 연봉 값 자체를 수정하기 위한
 select e.emp_id, name, sal
 from    employee e
-join    salary  s on e.sal_code = s.sal_code;
+join    salary  s on e.sal_code = s.sal_code
+order by e.emp_id;
 
 -- 연봉코드가 있는 테이블만 조회
 select  sal_code, sal
@@ -23,7 +24,8 @@ from    salary;
 -- 해당사번의 사원의 연봉을 정보들을 select
 select e.emp_id, name, e.sal_code, sal
 from    employee e
-join    salary  s on e.sal_code = s.sal_code;
+join    salary  s on e.sal_code = s.sal_code
+order by e.emp_id;
 
 -- 임시 업데이트
 --update employee
@@ -69,5 +71,21 @@ select ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24, ADD_MONTHS(TRUNC(sysdate, 'MM'
 from dual;
 
 -- 한 사원의 보너스 추가
-insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note)
-values(pay_seq.nextval, 1002, to_date(sysdate, 'yy-MM-dd'), 500000, 2, '이달의 성실 근무사원 선정');
+--insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note)
+--values(pay_seq.nextval, 1002, to_date(sysdate, 'yy-MM-dd'), 500000, 2, '이달의 성실 근무사원 선정');
+
+select  p1.pay_id pay_id, e.emp_id emp_id, e.name name, p1.pay_date pay_date, p1.pay pay,
+        nvl((
+        select sum(p2.pay)
+        from    payroll p2
+        where   p2.emp_id = e.emp_id
+        and     p2.pay_type = 2
+        and     p2.pay_date > ADD_MONTHS(TRUNC(p1.pay_date, 'MM'), -1) + 24
+        and     p2.pay_date <= p1.pay_date
+        ), 0) as bonus
+from    employee e
+join    payroll p1 on e.emp_id = p1.emp_id
+where   p1.pay_type = 1
+        and to_char(p1.pay_date, 'DD') = '25'
+        and p1.pay_date <= TRUNC(sysdate)
+order by    p1.pay_id;

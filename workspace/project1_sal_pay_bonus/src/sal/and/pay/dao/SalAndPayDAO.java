@@ -1,6 +1,7 @@
 package sal.and.pay.dao;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -188,7 +189,7 @@ public class SalAndPayDAO {
 				bonus = rs.getInt("bonus");
 				realPay = pay - duty + bonus;
 				
-				pDTO = new PayDateDTO(emp_id, pay, duty, bonus, realPay, name);
+				pDTO = new PayDateDTO(emp_id, 0, pay, duty, bonus, realPay, name, null);
 				list.add(pDTO);
 			}			
 			
@@ -224,17 +225,17 @@ public class SalAndPayDAO {
 			
 			rs = pstmt.executeQuery();
 			
-			int pay = 0;
+			long pay = 0;
 			Date pay_date = null;
 			String pay_note = "";
 			
 			SalAndPayDTO sDTO = null;
 			while(rs.next()) {
-				pay = rs.getInt("pay");
+				pay = rs.getLong("pay");
 				pay_date = rs.getDate("pay_date");
 				pay_note = rs.getString("pay_note");
 				
-				sDTO = new SalAndPayDTO(0, 0, 0, pay, 0, 0, "", "", "", pay_note, pay_date);
+				sDTO = new SalAndPayDTO(0, 0, 0, 0, 0, pay, "", "", "", pay_note, pay_date);
 				list.add(sDTO);
 			}			
 			
@@ -260,7 +261,7 @@ public class SalAndPayDAO {
 			
 			pstmt = con.prepareStatement(insertBonus);
 			pstmt.setInt(1, sDTO.getEmp_id());
-			pstmt.setInt(2, sDTO.getPay());
+			pstmt.setLong(2, sDTO.getPay());
 			pstmt.setString(3, sDTO.getPay_note());
 			
 			rowCnt = pstmt.executeUpdate();
@@ -270,6 +271,137 @@ public class SalAndPayDAO {
 			gc.dbClose(con, pstmt, null);
 		}
 		return rowCnt;
+	}
+	
+	public List<PayDateDTO> selectPayRecords() throws SQLException, IOException {
+		List<PayDateDTO> list = new ArrayList<PayDateDTO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		GetConnection gc = GetConnection.getInstance();
+		
+		try {
+			con = gc.getConn();
+			
+			String selectPayRecords = "select  p1.pay_id pay_id, e.emp_id emp_id, e.name name, p1.pay_date pay_date, p1.pay pay, "
+					+ "		nvl(( "
+					+ "		select sum(p2.pay) "
+					+ "		from    payroll p2 "
+					+ "		where   p2.emp_id = e.emp_id "
+					+ "		and     p2.pay_type = 2 "
+					+ "		and     p2.pay_date > ADD_MONTHS(TRUNC(p1.pay_date, 'MM'), -1) + 24 "
+					+ "		and     p2.pay_date <= p1.pay_date "
+					+ "), 0) as bonus "
+					+ "from    employee e "
+					+ "join    payroll p1 on e.emp_id = p1.emp_id "
+					+ "where   p1.pay_type = 1 "
+					+ "        and to_char(p1.pay_date, 'DD') = '25' "
+					+ "        and p1.pay_date <= TRUNC(sysdate) "
+					+ "order by    p1.pay_id ";
+			
+			pstmt = con.prepareStatement(selectPayRecords);
+			
+			rs = pstmt.executeQuery();
+			
+			int pay_id = 0;
+			int emp_id = 0;
+			String name = "";
+			Date pay_date = null;
+			int pay = 0;
+			int duty = 0;
+			int bonus = 0;
+			int realPay = 0;
+			
+			PayDateDTO pDTO = null;
+			while(rs.next()) {
+				pay_id = rs.getInt("pay_id");
+				emp_id = rs.getInt("emp_id");
+				name = rs.getString("name");
+				pay_date = rs.getDate("pay_date");
+				pay = rs.getInt("pay");
+				duty = (int)(pay * 0.033);
+				bonus = rs.getInt("bonus");
+				realPay = pay - duty + bonus;
+				
+				pDTO = new PayDateDTO(emp_id, pay_id, pay, duty, bonus, realPay, name, pay_date);
+				list.add(pDTO);
+			}			
+			
+		} finally {
+			gc.dbClose(con, pstmt, rs);
+		}
+		
+		return list;
+	}
+	
+	public List<PayDateDTO> conditionSelectPayRecords(String conditions) throws SQLException, IOException {
+		List<PayDateDTO> list = new ArrayList<PayDateDTO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		GetConnection gc = GetConnection.getInstance();
+		
+		try {
+			con = gc.getConn();
+			
+			String selectPayRecords = "select  p1.pay_id pay_id, e.emp_id emp_id, e.name name, p1.pay_date pay_date, p1.pay pay, "
+					+ "		nvl(( "
+					+ "		select sum(p2.pay) "
+					+ "		from    payroll p2 "
+					+ "		where   p2.emp_id = e.emp_id "
+					+ "		and     p2.pay_type = 2 "
+					+ "		and     p2.pay_date > ADD_MONTHS(TRUNC(p1.pay_date, 'MM'), -1) + 24 "
+					+ "		and     p2.pay_date <= p1.pay_date "
+					+ "), 0) as bonus "
+					+ "from    employee e "
+					+ "join    payroll p1 on e.emp_id = p1.emp_id "
+					+ "where   p1.pay_type = 1 "
+					+ "        and to_char(p1.pay_date, 'DD') = '25' "
+					+ "        and p1.pay_date <= TRUNC(sysdate) ";
+			
+			// bonus가 계산으로 만들어진 컬럼이기 때문에 인라인뷰(가상테이블)를 생성하여 bonus에 조건을 걸어야 에러가 발생하지 않는다.
+			selectPayRecords = "SELECT * FROM (" + selectPayRecords + ") T1 "; 
+
+			// where절에 조건이 추가되는지 확인 후 where를 붙입니다.
+			selectPayRecords += "WHERE 1=1 " + conditions + " order by T1.pay_id "; // `conditions`에 " and bonus = 0"이 포함됨
+			
+			pstmt = con.prepareStatement(selectPayRecords);
+			
+			rs = pstmt.executeQuery();
+			
+			int pay_id = 0;
+			int emp_id = 0;
+			String name = "";
+			Date pay_date = null;
+			int pay = 0;
+			int duty = 0;
+			int bonus = 0;
+			int realPay = 0;
+			
+			PayDateDTO pDTO = null;
+			while(rs.next()) {
+				pay_id = rs.getInt("pay_id");
+				emp_id = rs.getInt("emp_id");
+				name = rs.getString("name");
+				pay_date = rs.getDate("pay_date");
+				pay = rs.getInt("pay");
+				duty = (int)(pay * 0.033);
+				bonus = rs.getInt("bonus");
+				realPay = pay - duty + bonus;
+				
+				pDTO = new PayDateDTO(emp_id, pay_id, pay, duty, bonus, realPay, name, pay_date);
+				list.add(pDTO);
+			}			
+			
+		} finally {
+			gc.dbClose(con, pstmt, rs);
+		}
+		
+		return list;
 	}
 	
 	public static SalAndPayDAO getInstance() {

@@ -7,6 +7,10 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import sal.and.pay.design.AddBonusDesign;
 import sal.and.pay.dto.SalAndPayDTO;
@@ -43,6 +47,9 @@ public class AddBonusEvt extends WindowAdapter implements ActionListener{
 	}
 	
 	public void addBonus() {
+		// 7자리 제한
+		limitNumberSize();
+		
 		String strBonus = abd.getJtfBonus().getText().trim();
 		String strReason = abd.getJtfReason().getText().trim();
 		
@@ -50,9 +57,9 @@ public class AddBonusEvt extends WindowAdapter implements ActionListener{
 			JOptionPane.showMessageDialog(null, "보너스 금액을 입력해주세요.");
 			return;
 		}
-		int bonus;
+		long bonus;
 		try {
-			bonus = Integer.parseInt(strBonus);				
+			bonus = Long.parseLong(strBonus);				
 		} catch (NumberFormatException nfe) {
 			JOptionPane.showMessageDialog(null, "보너스는 숫자만 입력해주세요.");
 			abd.getJtfBonus().requestFocus();
@@ -72,7 +79,7 @@ public class AddBonusEvt extends WindowAdapter implements ActionListener{
 			return;
 		}
 		
-		SalAndPayDTO sDTO = new SalAndPayDTO(abd.getEmp_id(), 0, 0, bonus, 0, 0, "", "", "", strReason, null);
+		SalAndPayDTO sDTO = new SalAndPayDTO(abd.getEmp_id(), 0, 0, 0, 0, bonus, "", "", "", strReason, null);
 		
 		String msg = abd.getName() + "사원의 보너스를 추가할 수 없습니다.";
 		if (saps.insertBonus(sDTO)) {
@@ -87,6 +94,27 @@ public class AddBonusEvt extends WindowAdapter implements ActionListener{
 		
 		// 지급예정 테이블 최신화
 		sape.refreshPayDateTable();
+	}
+	
+	/**
+	 * 보너스 지급 금액 JTextField의 입력자리수 제한을 위해
+	 */
+	public void limitNumberSize() {
+		((AbstractDocument) abd.getJtfBonus().getDocument()).setDocumentFilter(new DocumentFilter() {
+		    @Override
+		    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+		        if (string.matches("\\d*") && (fb.getDocument().getLength() + string.length() <= 7)) {
+		            super.insertString(fb, offset, string, attr);
+		        }
+		    }
+
+		    @Override
+		    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+		        if (text.matches("\\d*") && (fb.getDocument().getLength() - length + text.length() <= 7)) {
+		            super.replace(fb, offset, length, text, attrs);
+		        }
+		    }
+		});
 	}
 	
 	public void refreshBonusTable() {

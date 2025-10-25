@@ -65,7 +65,7 @@ public class AddBonusDesign extends JDialog{
 		
 		
 		// 하단 해당 사원의 보너스 기록 테이블
-		String[] columns = {"보너스 지급 기록", "날짜", "사유"};
+		String[] columns = {"보너스 지급 금액", "날짜", "사유"};
 		Object[][] data = abe.loadEmpBonus();
 		dtmBonus = new DefaultTableModel(data, columns) {
 			//셀 수정 불가 처리

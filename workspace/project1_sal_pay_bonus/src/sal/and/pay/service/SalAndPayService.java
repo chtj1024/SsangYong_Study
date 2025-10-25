@@ -100,4 +100,32 @@ public class SalAndPayService {
 		
 		return flag;
 	}
+	
+	public List<PayDateDTO> selectPayRecords() {
+		List<PayDateDTO> list = null;
+		
+		try {
+			list = sDAO.selectPayRecords();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public List<PayDateDTO> conditonSelectPayRecords(String conditions) {
+		List<PayDateDTO> list = null;
+		
+		try {
+			list = sDAO.conditionSelectPayRecords(conditions);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 }

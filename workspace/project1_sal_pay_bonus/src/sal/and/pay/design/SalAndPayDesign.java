@@ -103,6 +103,8 @@ public class SalAndPayDesign extends JFrame{
 		jbtnShowPayDate.addActionListener(sape);
 		jbtnShowPayRecords.addActionListener(sape);
 		jbtnCheckBonus.addActionListener(sape);
+		jbtnSearchPayRecodes.addActionListener(sape);
+		jbtnResetSearch.addActionListener(sape);
 		
 		setBounds(100, 100, 900, 600);
 		setVisible(true);
@@ -166,10 +168,11 @@ public class SalAndPayDesign extends JFrame{
 		jpTop.add(jbtnSearchPayRecodes);
 		
 		String[] columns = {"지급번호", "사번", "이름", "지급날짜", "월급(세전)", "세금", "보너스", "실지급액"};
+		Object[][] data = sape.loadPayRecords();
 		
 		// DB에서 불러올 데이터
 		
-		dtmPayRecords = new DefaultTableModel(columns, 0) {
+		dtmPayRecords = new DefaultTableModel(data, columns) {
 	        @Override
 	        public boolean isCellEditable(int row, int column) {
 	            return false; // 셀 수정 불가
@@ -187,7 +190,7 @@ public class SalAndPayDesign extends JFrame{
 	    
 		return panel;
 	}
-	
+
 	public JTabbedPane getJtpSalAndPay() {
 		return jtpSalAndPay;
 	}
@@ -216,12 +219,20 @@ public class SalAndPayDesign extends JFrame{
 		return dtmPayDate;
 	}
 
+	public DefaultTableModel getDtmPayRecords() {
+		return dtmPayRecords;
+	}
+
 	public JTable getJtYearSal() {
 		return jtYearSal;
 	}
 
 	public JTable getJtPayDate() {
 		return jtPayDate;
+	}
+
+	public JTable getJtPayRecords() {
+		return jtPayRecords;
 	}
 
 	public JLabel getJlbPayDate() {
@@ -243,5 +254,14 @@ public class SalAndPayDesign extends JFrame{
 	public JButton getJbtnShowPayRecords() {
 		return jbtnShowPayRecords;
 	}
+
+	public JButton getJbtnSearchPayRecodes() {
+		return jbtnSearchPayRecodes;
+	}
+
+	public JButton getJbtnResetSearch() {
+		return jbtnResetSearch;
+	}
+	
 	
 }
