@@ -49,9 +49,18 @@ select  e.emp_id, e.name,
 from    employee e
 join    payroll p on e.emp_id = p.emp_id
 where   p.pay_date between
-        ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24
-        and
-        ADD_MONTHS(TRUNC(sysdate, 'MM'), 0) + 24
+        (case
+            when to_number(to_char(sysdate, 'DD')) > 25
+                then TRUNC(sysdate, 'MM') + 24       -- 이번 달 25일 (포함)
+            else
+                ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24 -- 이전 달 25일 (포함)
+         end)
+    and (case
+            when to_number(to_char(sysdate, 'DD')) > 25
+                then ADD_MONTHS(TRUNC(sysdate, 'MM'), 1) + 24  -- 다음 달 25일 (포함)
+            else
+                TRUNC(sysdate, 'MM') + 24  -- 이번 달 25일 (포함)
+         end)
 group by e.emp_id, e.name
 order by e.emp_id;
 
@@ -66,9 +75,6 @@ order by pay_date desc;
 --values(pay_seq.nextval, 1002, to_date('2025-10-21', 'yyyy-MM-dd'), 500000, 2, '9월초과 업무 수당');
 
 select * from payroll;
-
-select ADD_MONTHS(TRUNC(sysdate, 'MM'), -1) + 24, ADD_MONTHS(TRUNC(sysdate, 'MM'), 0) + 24
-from dual;
 
 -- 한 사원의 보너스 추가
 --insert into payroll (pay_id, emp_id, pay_date, pay, pay_type, pay_note)

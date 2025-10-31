@@ -1,6 +1,6 @@
 package run.test;
 
-import sal.and.pay.design.SalAndPayDesign;
+import admin.design.SalAndPayDesign;
 
 public class RunTest {
 	
