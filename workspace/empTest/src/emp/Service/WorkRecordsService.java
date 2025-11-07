@@ -21,7 +21,6 @@ import emp.DTO.WorkRecordsResultDTO;
 public class WorkRecordsService {
 	private static WorkRecordsService wrService;
 	private final SimpleDateFormat DATE_PARSER = new SimpleDateFormat("yyyy-MM-dd");
-	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd");
 	private WorkRecordsDAO wrDAO;
 	 
 	private WorkRecordsService() {
@@ -114,7 +113,7 @@ public class WorkRecordsService {
 				displayDTO.setAsName(sourceData.getAsName());
 			}//end if
 		} else { // 결근
-			displayDTO.setWorkDate(DATE_FORMAT.format(date));
+			displayDTO.setWorkDate(DATE_PARSER.format(date));
 			displayDTO.setClockInTime(" - ");
 			displayDTO.setClockOutTime(" - ");
 			displayDTO.setWorkHours(" - ");

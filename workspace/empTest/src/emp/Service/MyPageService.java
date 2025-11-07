@@ -7,7 +7,7 @@ import emp.DAO.EmpDAO;
 import emp.DTO.MyPageDTO;
 
 public class MyPageService {
-	private EmpDAO eDAO;
+	private static EmpDAO eDAO;
 	
 	public MyPageService() {
 		eDAO=EmpDAO.getInstance();

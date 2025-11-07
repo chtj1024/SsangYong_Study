@@ -41,7 +41,7 @@ public class WorkRecordsDAO {
 				" select "
 				+ " a.check_in, "
 				+ " a.check_out, "
-				+ " to_char(a.check_in, 'mm/dd') displayDate, "
+				+ " to_char(a.check_in, 'yyyy-mm-dd') displayDate, "
 				+ " to_char(a.check_in, 'hh24:mi') checkInTime, "
 				+ " nvl(to_char(a.check_out, 'hh24:mi'), ' - ') checkOutTime, "
 				+ " s.asName "
@@ -69,7 +69,7 @@ public class WorkRecordsDAO {
         	if (checkOutTs != null) {
         		rawDto.setCheckOut(checkOutTs);
         	}//end if
-        	rawDto.setDisplayDate(rs.getString("displayDate")); // "MM/DD"
+        	rawDto.setDisplayDate(rs.getString("displayDate"));
         	rawDto.setCheckInTime(rs.getString("checkInTime"));
         	rawDto.setCheckOutTime(rs.getString("checkOutTime"));
         	rawDto.setAsName(rs.getString("asName"));
@@ -97,13 +97,13 @@ public class WorkRecordsDAO {
 		String selectQuery =
 			" select "
 			+ "  vu.start_date, "
-			+ "  to_char(vu.start_date, 'mm/dd') displayDate, "
+			+ "  to_char(vu.start_date, 'yyyy-mm-dd') displayDate, "
 			+ "  vt.vtname "
 			+ "  from vacation_use vu "
 			+ "  join vacation_type vt on vu.vt_code = vt.vt_code "
 			+ "  where vu.emp_id = ? "
 			+ "  and vu.approve = 'Y' "
-			+ "  and vu.start_date between to_date(?, 'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') ";
+			+ "  and vu.start_date between to_date(?, 'yyyy-mm-dd') and to_date(?, 'yyyy-mm-dd') +1";
 
         pstmt = conn.prepareStatement(selectQuery);
         pstmt.setInt(1, searchDTO.getEmpId());

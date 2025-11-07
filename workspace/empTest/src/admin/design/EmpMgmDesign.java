@@ -77,6 +77,7 @@ public class EmpMgmDesign extends JFrame {
 
 		setResizable(false);
 		setBounds(100, 100, 600, 300);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	

@@ -23,16 +23,56 @@ public class SalCheckEvt extends WindowAdapter implements ActionListener {
 	private SalCheckService scs;
 	private int emp_id;
 
-	public SalCheckEvt() {
-
-
-	}
-
 	public SalCheckEvt(SalCheckDesign scd, int empno) {
 		
 		this.scd = scd;
 		this.scs = new SalCheckService();
 		this.emp_id = empno;
+	}
+	
+	@Override
+	public void windowClosing(WindowEvent e) {
+		scd.dispose();
+	}
+	
+	@Override
+	public void windowOpened(WindowEvent e) {
+		try {
+			loadMySalInfo();
+			//콤보박스 현재년도 자동선택
+			int currentYear = java.time.Year.now().getValue();
+			scd.getJcbYear().setSelectedItem(currentYear + "년");
+			loadEmployeePay(currentYear, emp_id);
+		} catch (IOException |SQLException e1) {
+			e1.printStackTrace();
+			JOptionPane.showMessageDialog(scd, "급여 정보를 불러오는 중 오류가 발생했습니다.");
+		}
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource()==scd.getJcbYear()) {
+			try {
+				//Jcombobox에서 선택된 년도 가져오기
+				JComboBox<String> jcbYear=scd.getJcbYear();	
+				String selected = (String) jcbYear.getSelectedItem();
+				//2025년에서 2025만
+				int year=Integer.parseInt(selected.replace("년","").trim());
+				
+				//연도+사원번호 전달
+				loadEmployeePay(year, emp_id);
+				
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(scd, "올바른 연도를 선택하세요");
+				
+			}
+
+		}
 	}
 
 	// 창열떄 내급여정보 불러오기
@@ -104,52 +144,5 @@ public class SalCheckEvt extends WindowAdapter implements ActionListener {
 		
 	}
 
-	//
-
-	@Override
-	public void windowClosing(WindowEvent e) {
-		scd.dispose();
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		try {
-			loadMySalInfo();
-		//콤보박스 현재년도 자동선택
-		int currentYear = java.time.Year.now().getValue();
-		   scd.getJcbYear().setSelectedItem(currentYear + "년");
-			loadEmployeePay(currentYear, emp_id);
-		} catch (IOException |SQLException e1) {
-			e1.printStackTrace();
-			JOptionPane.showMessageDialog(scd, "급여 정보를 불러오는 중 오류가 발생했습니다.");
-			}
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-			if(e.getSource()==scd.getJcbYear()) {
-			try {
-				//Jcombobox에서 선택된 년도 가져오기
-				JComboBox<String> jcbYear=scd.getJcbYear();	
-				 String selected = (String) jcbYear.getSelectedItem();
-				//2025년에서 2025만
-				int year=Integer.parseInt(selected.replace("년","").trim());
-				
-				//연도+사원번호 전달
-					loadEmployeePay(year, emp_id);
-					
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				} catch (IOException ex) {
-					ex.printStackTrace();
-				} catch (NumberFormatException ex) {
-		JOptionPane.showMessageDialog(scd, "올바른 연도를 선택하세요");
-				
-			}
-			
-		
-			}
-		}
 	}
 

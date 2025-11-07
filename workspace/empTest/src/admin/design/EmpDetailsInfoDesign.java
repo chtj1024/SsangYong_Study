@@ -254,7 +254,7 @@ public class EmpDetailsInfoDesign extends JFrame {
 
 		setBounds(200, 200, 750, 550); // 너비 750, 높이 550
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
+		setLocationRelativeTo(null);
 		setVisible(true); 
 	}
 

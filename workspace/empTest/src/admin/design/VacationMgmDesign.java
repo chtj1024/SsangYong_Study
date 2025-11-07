@@ -17,7 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import admin.dto.DeptSelectDTO;
-import admin.event.VacationMgmEvt; 
+import admin.event.VacationMgmEvt;
+import util.StatusColumnCellRenderer; 
 
 @SuppressWarnings("serial")
 public class VacationMgmDesign extends JFrame {
@@ -176,6 +177,7 @@ public class VacationMgmDesign extends JFrame {
 		setBounds(100, 100, 670, 600);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); 
 		
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 

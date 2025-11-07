@@ -57,6 +57,7 @@ public class LoginDesign extends JFrame {
         setSize(400,300);
 		setLocationRelativeTo(null);
 		setVisible(true);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}//LoginDesign
 

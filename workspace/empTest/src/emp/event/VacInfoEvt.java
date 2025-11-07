@@ -124,65 +124,64 @@ public class VacInfoEvt extends WindowAdapter implements ActionListener, KeyList
 	
 	public void resistVac() {
 		VacInfoCenterPanel vicp = vid.getVicp();
-		
-		if("".equals(vicp.getJtfReason().getText().trim())) {
-			JOptionPane.showMessageDialog(vicp, "사유를 입력하세요.");
-			return;
-		}
-		
-		Calendar sCal = Calendar.getInstance();
-		Calendar eCal = Calendar.getInstance();
-		
-		Date startDate = null;
-		Date endDate = null;
-		
-		sCal.setLenient(false);
-		eCal.setLenient(false);
-		
-		int sYear = Integer.parseInt(vicp.getDcbmStartYear().getElementAt(vicp.getJcStartYear().getSelectedIndex()));
-		int sMonth = Integer.parseInt(vicp.getDcbmStartMonth().getElementAt(vicp.getJcStartMonth().getSelectedIndex()));
-		int sDate = Integer.parseInt(vicp.getDcbmStartDay().getElementAt(vicp.getJcStartDay().getSelectedIndex()));
-		
-		int eYear = Integer.parseInt(vicp.getDcbmEndYear().getElementAt(vicp.getJcEndYear().getSelectedIndex()));
-		int eMonth = Integer.parseInt(vicp.getDcbmEndMonth().getElementAt(vicp.getJcEndMonth().getSelectedIndex()));
-		int eDate = Integer.parseInt(vicp.getDcbmEndDay().getElementAt(vicp.getJcEndDay().getSelectedIndex()));
-		
-		try {
-			sCal.set(sYear, sMonth-1, sDate);
-			eCal.set(eYear, eMonth - 1, eDate);
-			
-			startDate = new Date(sCal.getTimeInMillis());
-			endDate = new Date(eCal.getTimeInMillis());
-			
-		} catch (IllegalArgumentException e) {
-		    JOptionPane.showMessageDialog(vicp, "존재하지 않는 날짜입니다.");
-		    return;
-		}
-		
-		if((sCal.getTimeInMillis() - eCal.getTimeInMillis()) > 0) {
-			JOptionPane.showMessageDialog(vicp, "시작일의 날짜가 더 큽니다.");
-			return;
-		}
-		
-		switch (checkDate(sCal, eCal)) {
-		case TOO_PAST: JOptionPane.showMessageDialog(vicp, "현재 날짜에 맞게 신청해주십시오."); break;
-		case TOO_LONG_TO_HAVE_BREAK: JOptionPane.showMessageDialog(vicp, "보유한 연차보다 긴 휴가는 사용할 수 없습니다."); break;
-		
-		default: 
-			String vtname = vicp.getDcbmVacayType().getElementAt(vicp.getJcVacayType().getSelectedIndex());
-			VacInfoDTO vDTO = new VacInfoDTO(0, empId, vis.getVtCode(vtname), vicp.getJtfReason().getText()
-					.trim(), startDate, endDate, ' ');
-			boolean flag = vis.resistVacUse(vDTO);
-			
-			if(flag) {
-				vicp.getJtfReason().setText("");
-//				new VacInfoCenterPanel();
-			} else {
-				JOptionPane.showMessageDialog(vicp, "오류! 관리자에게 보고해주세요.");
-			}
-		}
-		
-		setComboBox();
+	      
+	      if("".equals(vicp.getJtfReason().getText().trim())) {
+	         JOptionPane.showMessageDialog(vicp, "사유를 입력하세요.");
+	         return;
+	      }
+	      
+	      Calendar sCal = Calendar.getInstance();
+	      Calendar eCal = Calendar.getInstance();
+	      
+	      Date startDate = null;
+	      Date endDate = null;
+	      
+	      sCal.setLenient(false);
+	      eCal.setLenient(false);
+	      
+	      int sYear = Integer.parseInt(vicp.getDcbmStartYear().getElementAt(vicp.getJcStartYear().getSelectedIndex()));
+	      int sMonth = Integer.parseInt(vicp.getDcbmStartMonth().getElementAt(vicp.getJcStartMonth().getSelectedIndex()));
+	      int sDate = Integer.parseInt(vicp.getDcbmStartDay().getElementAt(vicp.getJcStartDay().getSelectedIndex()));
+	      
+	      int eYear = Integer.parseInt(vicp.getDcbmEndYear().getElementAt(vicp.getJcEndYear().getSelectedIndex()));
+	      int eMonth = Integer.parseInt(vicp.getDcbmEndMonth().getElementAt(vicp.getJcEndMonth().getSelectedIndex()));
+	      int eDate = Integer.parseInt(vicp.getDcbmEndDay().getElementAt(vicp.getJcEndDay().getSelectedIndex()));
+	      
+	      try {
+	         sCal.set(sYear, sMonth-1, sDate);
+	         eCal.set(eYear, eMonth - 1, eDate);
+	         
+	         startDate = new Date(sCal.getTimeInMillis());
+	         endDate = new Date(eCal.getTimeInMillis());
+	         
+	      } catch (IllegalArgumentException e) {
+	          JOptionPane.showMessageDialog(vicp, "존재하지 않는 날짜입니다.");
+	          return;
+	      }
+	      
+	      if((sCal.getTimeInMillis() - eCal.getTimeInMillis()) > 0) {
+	         JOptionPane.showMessageDialog(vicp, "시작일의 날짜가 더 큽니다.");
+	         return;
+	      }
+	      
+	      switch (checkDate(sCal, eCal)) {
+	      case TOO_PAST: JOptionPane.showMessageDialog(vicp, "현재 날짜에 맞게 신청해주십시오."); break;
+	      case TOO_LONG_TO_HAVE_BREAK: JOptionPane.showMessageDialog(vicp, "보유한 연차보다 긴 휴가는 사용할 수 없습니다."); break;
+	      
+	      default: 
+	         String vtname = vicp.getDcbmVacayType().getElementAt(vicp.getJcVacayType().getSelectedIndex());
+	         VacInfoDTO vDTO = new VacInfoDTO(0, empId, vis.getVtCode(vtname), vicp.getJtfReason().getText()
+	               .trim(), startDate, endDate, ' ');
+	         boolean flag = vis.resistVacUse(vDTO);
+	         
+	         if(flag) {
+	            setComboBox();
+	            vicp.getJtfReason().setText("");
+//	            new VacInfoCenterPanel();
+	         } else {
+	            JOptionPane.showMessageDialog(vicp, "오류! 관리자에게 보고해주세요.");
+	         }
+	      }
 	}
 	
 	public void callVacInfo() {

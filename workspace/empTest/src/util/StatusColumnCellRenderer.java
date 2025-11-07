@@ -1,4 +1,4 @@
-package admin.design;
+package util;
 
 import java.awt.Color;
 import java.awt.Component;

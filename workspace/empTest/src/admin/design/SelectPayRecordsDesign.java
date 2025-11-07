@@ -85,7 +85,7 @@ public class SelectPayRecordsDesign extends JDialog{
         
         jbtnSearch.addActionListener(spre);
         jbtnCancel.addActionListener(spre);
-        
+        setLocationRelativeTo(null);
         setVisible(true);
 	}
 

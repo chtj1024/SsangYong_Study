@@ -20,7 +20,7 @@ public class MyPageDesign extends JFrame{
 	private MyPageEvt me;
 	private JButton updateMyInfo,updatePass;
 	
-	private EmpProfileDesign empProfile;
+//	private EmpProfileDesign empProfile;
 	private EmpMainEvt mevt;
 	
 
@@ -190,6 +190,7 @@ public class MyPageDesign extends JFrame{
 
         
 		setVisible(true);
+		setLocationRelativeTo(null);
 //		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}

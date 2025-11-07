@@ -39,6 +39,7 @@ public class VacInfoDesign extends JFrame {
 		add("South", jpSouth);
 		
 		setVisible(true);
+		setLocationRelativeTo(null);
 		setBounds(100, 100, 586, 441);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}

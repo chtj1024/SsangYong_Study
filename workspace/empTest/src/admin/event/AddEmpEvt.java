@@ -56,10 +56,20 @@ public class AddEmpEvt extends WindowAdapter implements ActionListener, KeyListe
 		AddEmpService aes = new AddEmpService();
 		AddEmpDTO aDTO = new AddEmpDTO();
 		
-		aDTO.setName(aed.getJtfName().getText().trim());
-		aDTO.setEmail(aed.getJtfEmail().getText().trim());
-		aDTO.setTel(aed.getJtfTel().getText().trim());
-		aDTO.setAddr(aed.getJtfAddr().getText().trim());
+		String name = aed.getJtfName().getText().trim();
+	    String email = aed.getJtfEmail().getText().trim();
+	    String tel = aed.getJtfTel().getText().trim();
+	    String addr = aed.getJtfAddr().getText().trim();
+	      
+	      if(name.equals("") || email.equals("") || tel.equals("") || addr.equals("")) {
+	         JOptionPane.showMessageDialog(aed, "값을 비워둘 수 없습니다.");
+	         return;
+	      }
+	      
+	      aDTO.setName(name);
+	      aDTO.setEmail(email);
+	      aDTO.setTel(tel);
+	      aDTO.setAddr(addr);
 		
 		if(!check(aDTO)) {
 			JOptionPane.showMessageDialog(aed, "올바른 입력값을 입력하지 않았습니다");
@@ -93,8 +103,15 @@ public class AddEmpEvt extends WindowAdapter implements ActionListener, KeyListe
 		} catch (NullPointerException npe) {
 			return false;
 		}
+		try {
+	         Integer.parseInt(telArr[0]);
+	         Integer.parseInt(telArr[1]);
+	         Integer.parseInt(telArr[2]);
+	      } catch(NumberFormatException nfe) {
+	         return false;
+	      }
 		
-		
+
 		if(telArr.length == 3 && telArr[0].length() == 3 && telArr[1].length() == 4 && telArr[2].length() == 4) {
 			flag2 = true;
 		}

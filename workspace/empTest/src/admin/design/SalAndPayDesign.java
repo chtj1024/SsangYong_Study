@@ -108,6 +108,7 @@ public class SalAndPayDesign extends JFrame{
 		jbtnResetSearch.addActionListener(sape);
 		
 		setBounds(100, 100, 900, 600);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 

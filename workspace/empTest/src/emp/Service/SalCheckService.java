@@ -8,7 +8,7 @@ import emp.DAO.EmpDAO;
 import emp.DTO.SalCheckDTO;
 
 public class SalCheckService {
-	private EmpDAO eDAO;
+	private static EmpDAO eDAO;
 
 	public SalCheckService() {
 		eDAO= EmpDAO.getInstance();

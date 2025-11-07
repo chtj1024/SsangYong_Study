@@ -69,6 +69,7 @@ public class DeptMgmDesign extends JFrame {
         this.getJbtnDeptAdd().addActionListener(deptEvent);
         this.addWindowListener(deptEvent); 
         
+        setLocationRelativeTo(null);
         this.setVisible(true);
     }
     

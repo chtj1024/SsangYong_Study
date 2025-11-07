@@ -83,6 +83,7 @@ public class AttdMgmDesign extends JFrame {
         AttdMgmEvent attdEvent = new AttdMgmEvent(this);
         this.getJbtnSearch().addActionListener(attdEvent);
         this.addWindowListener(attdEvent); 
+        setLocationRelativeTo(null);
         this.setVisible(true);
     }
     

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+</head>
+
+<style>
+
+#header,
+#navigation,
+#container,
+#footer {
+	width: 1200px;
+	margin: 0 auto;
+	background: white;
+	display: flex; /* 추가 */
+	
+}
+
+
+.left img, .right img{
+	max_width: 100%;
+	height: auto;
+	display: block;
+}
+
+.left {
+	flex: 1;
+}
+.right {
+	flex: 1;
+}
+
+/* 왼쪽 3개 비율 */
+.left div:nth-child(1){
+	flex: 1;
+}
+.left div:nth-child(2){
+	flex: 2;
+}
+.left div:nth-child(3){
+	flex: 1.5;
+}
+
+/* 오른쪽 3개 비율 */
+.right div:nth-child(1){
+	flex: 1;
+}
+.right div:nth-child(2){
+	flex: 3.5;
+}
+
+</style>
+
+<div id="header">
+	<img src="../images/main_search.png" style="height: auto">
+</div>
+
+
+<div id="navigation">
+	<img src="../images/navi_bar.png" style="height: auto">
+</div>
+
+<div id="container">
+	<div class="left">
+		<div><img src="../images/main_ad.png"></div>
+		<div><img src="../images/main_news.png"></div>
+		<div><img src="../images/cafe.png"></div>
+	</div>
+	
+	<div class="right">
+		<div><img src="../images/login_box.png"></div>
+		<div><img src="../images/showpping.png"></div>
+	</div>
+	
+	
+</div>
+
+<body>
+
+</body>
+
+<div id="footer">
+	<img src="../images/footer.png" style="height: auto">
+</div>
+
+</html>

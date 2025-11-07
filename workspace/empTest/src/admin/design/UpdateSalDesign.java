@@ -78,6 +78,7 @@ public class UpdateSalDesign extends JDialog{
 		
 		setBounds(200, 200, 500, 400);
 		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	public void UpdateSalConfirmDesign() {

@@ -25,6 +25,9 @@ public class VacInfoSouthPanel extends JPanel {
 		dtmApplyDetails = new DefaultTableModel(columnNames, 0);
 		jtApplyDetails = new JTable(dtmApplyDetails);
 		
+		jtApplyDetails.getColumn("휴가 유형").setPreferredWidth(10);
+	    jtApplyDetails.getColumn("상태").setPreferredWidth(10);
+	    
 		JScrollPane jspApplyDetails = new JScrollPane(jtApplyDetails);
 		
 		add("North", jlApply);

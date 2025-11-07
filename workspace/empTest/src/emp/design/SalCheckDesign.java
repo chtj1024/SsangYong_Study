@@ -171,6 +171,7 @@ public class SalCheckDesign extends JFrame {
 	        
 
 	        setVisible(true);
+	        setLocationRelativeTo(null);
 //	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	    }
 	  

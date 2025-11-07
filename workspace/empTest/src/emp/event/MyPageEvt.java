@@ -157,7 +157,7 @@ public class MyPageEvt extends WindowAdapter implements ActionListener{
 		String  confirmPass=new String(mpd.getJtfConfirmPass().getPassword());
 		//비밀번호가 비었거나 공백
 		if(currentPass.isEmpty()||newPass.isEmpty()||confirmPass.isEmpty()) {
-			JOptionPane.showMessageDialog(mpd, "비밀번호는 공백이거나 빈칸일 수 없습니다");
+			JOptionPane.showMessageDialog(mpd, "모든 비밀번호 입력칸을 채워주세요.");
 			return;
 		}
 		

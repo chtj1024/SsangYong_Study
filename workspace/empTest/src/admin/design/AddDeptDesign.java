@@ -39,6 +39,7 @@ public class AddDeptDesign extends JDialog {
 
         pack(); 
         setLocationRelativeTo(parent);
+        setLocationRelativeTo(null);
     }
     
     public void getter() {}

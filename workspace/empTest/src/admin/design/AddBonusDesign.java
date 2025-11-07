@@ -91,6 +91,7 @@ public class AddBonusDesign extends JDialog{
 		abe.limitNumberSize();
 		
 		addWindowListener(abe);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 

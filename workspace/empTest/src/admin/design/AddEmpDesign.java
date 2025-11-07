@@ -99,6 +99,7 @@ public class AddEmpDesign extends JDialog {
 		jtfTel.addKeyListener(aee);
 		
 		setBounds(100, 100, 300, 220);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 

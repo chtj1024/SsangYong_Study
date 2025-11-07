@@ -73,7 +73,7 @@ public class AdminMainDesign extends JFrame {
 		setResizable(false);
 		setBounds(100, 100, 500, 300);
 		setVisible(true);
-		
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

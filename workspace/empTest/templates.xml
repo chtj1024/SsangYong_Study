@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="true" context="html_new" deleted="false" description="embed방식의 style이 정의된 템플릿" enabled="true" name="html5 css template">&lt;!DOCTYPE html&gt;&#13;
+&lt;html&gt;&#13;
+&lt;head&gt;&#13;
+&lt;meta charset="${encoding}"&gt;&#13;
+&lt;title&gt;Insert title here&lt;/title&gt;&#13;
+&lt;link rel="stylesheet" type="text/css" href="http://192.168.10.91/html_prj/common/css/main_v251031.css"/&gt;&#13;
+&lt;style type="text/css"&gt;&#13;
+&#13;
+&lt;/style&gt;&#13;
+&lt;/head&gt;&#13;
+&lt;body&gt;&#13;
+&#13;
+&lt;/body&gt;&#13;
+&lt;/html&gt;</template></templates>

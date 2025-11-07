@@ -149,8 +149,8 @@ public class WorkRecordsDesign extends JFrame {
 		int startMonth = startCal.get(Calendar.MONTH) + 1;
 		int startDay = startCal.get(Calendar.DAY_OF_MONTH);
 		
-		// 년 (현재년도 +/- 5년)
-		for(int i = currentYear - 5; i <= currentYear + 5; i++) {
+		// 년 (현재년도 - 30년)
+		for(int i = currentYear; i >= currentYear -30; i--) {
 			jcbStartYear.addItem(i);
 			jcbEndYear.addItem(i);
 		}
